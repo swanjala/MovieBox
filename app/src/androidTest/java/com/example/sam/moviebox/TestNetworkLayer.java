@@ -28,8 +28,6 @@ public class TestNetworkLayer {
 
     @Test
     public void useAppContext() {
-        // Context of the app under test.
-        this.appContext = InstrumentationRegistry.getTargetContext();
 
         assertEquals("com.example.sam.moviebox", appContext.getPackageName());
     }
