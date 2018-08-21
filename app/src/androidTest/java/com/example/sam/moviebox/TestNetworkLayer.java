@@ -23,7 +23,6 @@ public class TestNetworkLayer {
     private Context appContext = InstrumentationRegistry.getTargetContext();
     private INetworkCalls callTest = new NetworkCalls(appContext);
 
-
     @Test
     public void useAppContext() {
 
