@@ -6,6 +6,8 @@ import android.content.Context;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -19,7 +21,9 @@ public interface INetworkCalls {
 
     HttpGet getMoviesObject() throws MalformedURLException;
 
-    String getNetworkData() throws IOException;
+    void getNetworkData() throws IOException, JSONException;
+
+    JSONArray dataResults();
 
 
 }
