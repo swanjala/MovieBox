@@ -11,9 +11,9 @@ import org.w3c.dom.TypeInfo;
 
 import java.lang.reflect.Array;
 
-public class JsonUtils {
+public class JsonUtils implements IJsonUtils {
 
-    private String jsonString;
+    public String jsonString;
     private JSONArray dataJsonArray;
     private JSONObject dataJsonObject;
     MovieModel movieModel = new MovieModel();
@@ -27,23 +27,18 @@ public class JsonUtils {
 
     }
 
-    public void dataJSONArray(String jsonString) throws JSONException {
+    public JSONArray dataJSONArray() throws JSONException {
 
-        JSONObject jsonObject = new JSONObject(jsonString);
+        JSONObject jsonObject = new JSONObject(this.jsonString);
 
         JSONArray results= jsonObject.getJSONArray("results");
-
-        JSONObject dataAtZero;
-
-        for (int i = 0; i < results.length() ; i++) {
-
-            dataAtZero = results.getJSONObject(i);
-            movieModel.setTitle(dataAtZero.getString("title"));
-        }
 
         Log.d("results", String.valueOf(results.length()));
 
         this.dataJsonObject = jsonObject;
+
+        this.dataJsonArray = results;
+        return  results;
 
     }
 
