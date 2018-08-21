@@ -1,4 +1,11 @@
 package com.example.sam.moviebox.networkUtils;
 
-public class IJsonUtils {
+import org.json.JSONArray;
+import org.json.JSONException;
+
+public interface IJsonUtils {
+
+    JSONArray dataJSONArray()throws JSONException;
+    public String jsonString = "";
+
 }
