@@ -60,7 +60,7 @@ public class MovieModel implements IMovieModel {
         this.originalTitle = originalTitle;
     }
 
-    public JSONArray getGenreIds(JSONArray genre_ids) {
+    public JSONArray getGenreIds() {
         return genreIds;
     }
 
