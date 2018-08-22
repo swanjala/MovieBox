@@ -9,7 +9,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/im_movie_image_poster"
+        android:id="@+id/iv_movie_image_poster"
         android:layout_width="163dp"
         android:layout_height="217dp"
         android:layout_alignParentStart="true"
@@ -27,7 +27,7 @@
         android:background="@color/colorAccent"
         android:hint="Movie Average"
         android:visibility="visible"
-        android:layout_above="@+id/im_movie_image_poster"/>
+        android:layout_above="@+id/iv_movie_image_poster"/>
 
 
 
