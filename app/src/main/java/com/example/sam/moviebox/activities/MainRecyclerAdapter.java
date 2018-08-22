@@ -23,7 +23,7 @@ public class MainRecyclerAdapter extends
     private LayoutInflater layoutInflater;
     private Context context;
 
-    public MainRecyclerAdapter(Context context, JSONArray movieData){
+    public MainRecyclerAdapter(Context context, JSONArray movieData) {
         this.context = context;
         this.mDataSet = movieData;
         this.layoutInflater = LayoutInflater.from(context);
@@ -39,19 +39,18 @@ public class MainRecyclerAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(MainRecyclerViewAdapter holder, int position){
+    public void onBindViewHolder(MainRecyclerViewAdapter holder, int position) {
+
         holder.setMovieData(mDataSet, position);
-        Log.d("Dataset",String.valueOf(mDataSet));
     }
 
     @Override
-    public int getItemCount(){
+    public int getItemCount() {
         return mDataSet.length();
     }
 
 
-
-    class MainRecyclerViewAdapter extends RecyclerView.ViewHolder{
+    class MainRecyclerViewAdapter extends RecyclerView.ViewHolder {
 
         TextView tv_vote_average;
         ImageView im_movie_poster;
@@ -62,35 +61,34 @@ public class MainRecyclerAdapter extends
         private String movieTitle;
         private String averageVote;
 
-        public MainRecyclerViewAdapter(View mainView){
+        public MainRecyclerViewAdapter(View mainView) {
             super(mainView);
             tv_vote_average = mainView.findViewById(R.id.tv_movie_vote_average);
             im_movie_poster = mainView.findViewById(R.id.im_movie_image_poster);
 
         }
 
-        public void setMovieData(final JSONArray currentData, final int position){
-            try{
+        public void setMovieData(final JSONArray currentData, final int position) {
+            try {
                 this.movieObject = currentData.getJSONObject(position);
                 this.averageVote = movieObject.getString("vote_average");
 
                 tv_vote_average.setText(averageVote);
                 Picasso.with(context)
-                        .load(context.getString(R.string.base_poster_url)+
+                        .load(context.getString(R.string.base_poster_url) +
                                 context.getString(R.string.poster_size_path_w185) +
                                 movieObject.getString("poster_path"))
                         .fit()
                         .centerCrop()
                         .into(im_movie_poster);
 
-            }catch(JSONException e){
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
 
     }
-
 
 
 }
