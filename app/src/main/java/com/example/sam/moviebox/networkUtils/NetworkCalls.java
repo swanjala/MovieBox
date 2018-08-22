@@ -10,6 +10,9 @@ import com.example.sam.moviebox.R;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -18,6 +21,7 @@ import java.net.URL;
 public class NetworkCalls implements INetworkCalls {
     private static String BASE_MOVIE_API_V3_URL = null;
     private Context context;
+    public JSONArray dataStringResult;
 
     public NetworkCalls(Context context) {
         BASE_MOVIE_API_V3_URL = context.getString(R.string.base_movie_url_api_v3);
@@ -32,16 +36,9 @@ public class NetworkCalls implements INetworkCalls {
                 .build();
         Log.d("Url", loadMovieDataUri.toString());
 
+        Log.d("setup ret",String.valueOf(new URL(loadMovieDataUri.toString())));
+
         return new URL(loadMovieDataUri.toString());
-
-    }
-
-    public String getNetworkData() throws IOException {
-
-        HttpResponse dataResponse = httpClient.execute(getMoviesObject());
-        String dataString = EntityUtils.toString(dataResponse.getEntity());
-
-        return dataString;
 
     }
 
@@ -53,5 +50,21 @@ public class NetworkCalls implements INetworkCalls {
                 context.getString(R.string.api_key))));
         return httpGetObject;
     }
+
+    public JSONArray getNetworkData() throws IOException, JSONException {
+
+        HttpResponse dataResponse = httpClient.execute(getMoviesObject());
+        String dataString = EntityUtils.toString(dataResponse.getEntity());
+
+        JSONObject jsonObject = new JSONObject(dataString);
+
+        return this.dataStringResult = jsonObject.getJSONArray("results");
+
+    }
+
+    public JSONArray dataResults() throws IOException, JSONException {
+        return getNetworkData();
+    }
+
 
 }
