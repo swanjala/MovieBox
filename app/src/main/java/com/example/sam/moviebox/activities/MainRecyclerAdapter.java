@@ -1,6 +1,7 @@
 package com.example.sam.moviebox.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,7 +106,9 @@ public class MainRecyclerAdapter extends
             iv_movie_poster.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // Code for the next Activity
+                    Intent detailsIntent = new Intent(context, DetailsActivity.class);
+                    detailsIntent.putExtra("movie_data", movieObject.toString());
+                    context.startActivity(detailsIntent);
                 }
             });
         }
