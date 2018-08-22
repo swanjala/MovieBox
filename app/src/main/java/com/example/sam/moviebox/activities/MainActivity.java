@@ -50,14 +50,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected JSONArray doInBackground(Context... contexts) {
             final INetworkCalls networkCalls = new NetworkCalls(getApplicationContext());
+
             try {
-                networkCalls.getNetworkData();
+                jsonArray = networkCalls.dataResults();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            jsonArray = networkCalls.dataResults();
             return jsonArray;
         }
 
