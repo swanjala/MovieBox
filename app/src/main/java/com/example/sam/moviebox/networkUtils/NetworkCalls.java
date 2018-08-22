@@ -36,6 +36,8 @@ public class NetworkCalls implements INetworkCalls {
                 .build();
         Log.d("Url", loadMovieDataUri.toString());
 
+        Log.d("setup ret",String.valueOf(new URL(loadMovieDataUri.toString())));
+
         return new URL(loadMovieDataUri.toString());
 
     }
@@ -49,19 +51,19 @@ public class NetworkCalls implements INetworkCalls {
         return httpGetObject;
     }
 
-    public void getNetworkData() throws IOException, JSONException {
+    public JSONArray getNetworkData() throws IOException, JSONException {
 
         HttpResponse dataResponse = httpClient.execute(getMoviesObject());
         String dataString = EntityUtils.toString(dataResponse.getEntity());
 
         JSONObject jsonObject = new JSONObject(dataString);
 
-        this.dataStringResult = jsonObject.getJSONArray("results");
+        return this.dataStringResult = jsonObject.getJSONArray("results");
 
     }
 
-    public JSONArray dataResults() {
-        return this.dataStringResult;
+    public JSONArray dataResults() throws IOException, JSONException {
+        return getNetworkData();
     }
 
 
