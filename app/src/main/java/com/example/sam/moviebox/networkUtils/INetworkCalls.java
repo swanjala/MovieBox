@@ -1,7 +1,5 @@
 package com.example.sam.moviebox.networkUtils;
 
-import android.content.Context;
-
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -21,9 +19,9 @@ public interface INetworkCalls {
 
     HttpGet getMoviesObject() throws MalformedURLException;
 
-    void getNetworkData() throws IOException, JSONException;
+    JSONArray getNetworkData() throws IOException, JSONException;
 
-    JSONArray dataResults();
+    JSONArray dataResults() throws IOException, JSONException;
 
 
 }
