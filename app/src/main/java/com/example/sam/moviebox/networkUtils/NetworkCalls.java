@@ -40,26 +40,6 @@ public class NetworkCalls implements INetworkCalls {
 
     }
 
-    public void getNetworkData() throws IOException, JSONException {
-
-        HttpResponse dataResponse = httpClient.execute(getMoviesObject());
-        String dataString = EntityUtils.toString(dataResponse.getEntity());
-
-        JSONObject jsonObject = new JSONObject(dataString);
-
-        JSONArray results= jsonObject.getJSONArray("results");
-
-        Log.d("results", String.valueOf(results.length()));
-
-        this.dataStringResult = results;
-
-
-    }
-
-    public JSONArray dataResults() {
-        return this.dataStringResult;
-    }
-
     @Override
     public HttpGet getMoviesObject() throws MalformedURLException {
 
@@ -68,5 +48,21 @@ public class NetworkCalls implements INetworkCalls {
                 context.getString(R.string.api_key))));
         return httpGetObject;
     }
+
+    public void getNetworkData() throws IOException, JSONException {
+
+        HttpResponse dataResponse = httpClient.execute(getMoviesObject());
+        String dataString = EntityUtils.toString(dataResponse.getEntity());
+
+        JSONObject jsonObject = new JSONObject(dataString);
+
+        this.dataStringResult = jsonObject.getJSONArray("results");
+
+    }
+
+    public JSONArray dataResults() {
+        return this.dataStringResult;
+    }
+
 
 }
