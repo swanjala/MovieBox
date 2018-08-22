@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.sam.moviebox.R;
+import com.example.sam.moviebox.moviewModels.IMovieModel;
+import com.example.sam.moviebox.moviewModels.MovieModel;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -17,16 +19,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainRecyclerAdapter extends
-        RecyclerView.Adapter<MainRecyclerAdapter.MainRecyclerViewAdapter> {
+        RecyclerView.Adapter<MainRecyclerAdapter.MainRecyclerViewAdapter>{
 
     private JSONArray mDataSet;
     private LayoutInflater layoutInflater;
     private Context context;
 
+
     public MainRecyclerAdapter(Context context, JSONArray movieData) {
         this.context = context;
         this.mDataSet = movieData;
         this.layoutInflater = LayoutInflater.from(context);
+        MovieModel movieModel = new MovieModel();
     }
 
     @Override
@@ -54,6 +58,7 @@ public class MainRecyclerAdapter extends
 
         TextView tv_vote_average;
         ImageView im_movie_poster;
+        IMovieModel movieModel = new MovieModel();
 
         int position;
         private JSONObject movieObject;
@@ -69,15 +74,32 @@ public class MainRecyclerAdapter extends
         }
 
         public void setMovieData(final JSONArray currentData, final int position) {
+
             try {
+
                 this.movieObject = currentData.getJSONObject(position);
-                this.averageVote = movieObject.getString("vote_average");
+
+                movieModel.setVoteAverage(movieObject.getString("vote_average"));
+                movieModel.setId(movieObject.getInt("id"));
+                movieModel.setVideo(movieObject.getBoolean("video"));
+                movieModel.setTitle(movieObject.getString("title"));
+                movieModel.setPopularity(movieObject.getInt("popularity"));
+                movieModel.setOriginalLanguage(movieObject.getString("original_language"));
+                movieModel.setOriginalTitle(movieObject.getString("original_title"));
+                movieModel.setGenreIds(movieObject.getJSONArray("genre_ids"));
+                movieModel.setPosterPath(movieObject.getString("poster_path"));
+                movieModel.setBackdropPath(movieObject.getString("backdrop_path"));
+                movieModel.setAdultFilm(movieObject.getBoolean("adult"));
+                movieModel.setOverview(movieObject.getString("overview"));
+                movieModel.setReleaseDate(movieObject.getString("release_date"));
+
+                this.averageVote = movieModel.getVoteAverage();
 
                 tv_vote_average.setText(averageVote);
                 Picasso.with(context)
                         .load(context.getString(R.string.base_poster_url) +
                                 context.getString(R.string.poster_size_path_w185) +
-                                movieObject.getString("poster_path"))
+                               movieModel.getPosterPath())
                         .fit()
                         .centerCrop()
                         .into(im_movie_poster);
