@@ -1,31 +1,22 @@
 package com.example.sam.moviebox.activities;
 
-import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.example.sam.moviebox.R;
-import com.example.sam.moviebox.moviewModels.MovieModel;
-import com.example.sam.moviebox.networkUtils.IJsonUtils;
 import com.example.sam.moviebox.networkUtils.INetworkCalls;
-import com.example.sam.moviebox.networkUtils.JsonUtils;
 import com.example.sam.moviebox.networkUtils.NetworkCalls;
-
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,25 +43,21 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.rv_main_layout_recyclerView);
         mLayoutManager = new GridLayoutManager(this, 2);
 
-
     }
 
     public class dataCallTask extends AsyncTask<Context, Void, JSONArray> {
 
-
         @Override
         protected JSONArray doInBackground(Context... contexts) {
             final INetworkCalls networkCalls = new NetworkCalls(getApplicationContext());
-            Log.d("running this", "runner");
             try {
-              networkCalls.getNetworkData();
+                networkCalls.getNetworkData();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             jsonArray = networkCalls.dataResults();
-            Log.d("Array data",String.valueOf(jsonArray));
             return jsonArray;
         }
 
