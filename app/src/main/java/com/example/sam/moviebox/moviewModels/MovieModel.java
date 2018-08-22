@@ -1,19 +1,21 @@
 package com.example.sam.moviebox.moviewModels;
 
+import org.json.JSONArray;
+
 import java.lang.reflect.Array;
 
-public class MovieModel {
+public class MovieModel implements IMovieModel {
 
     private int id;
     private boolean video;
-    private int voteAverage;
+    private String voteAverage;
     private String title;
     private int popularity;
     private String posterPath;
     private boolean adultFilm;
     private String originalLanguage;
     private String originalTitle;
-    private Array genreIds;
+    private JSONArray genreIds;
     private String backdropPath;
     private String overview;
     private String releaseDate;
@@ -58,11 +60,11 @@ public class MovieModel {
         this.originalTitle = originalTitle;
     }
 
-    public Array getGenreIds() {
+    public JSONArray getGenreIds(JSONArray genre_ids) {
         return genreIds;
     }
 
-    public void setGenreIds(Array genreIds) {
+    public void setGenreIds(JSONArray genreIds) {
         this.genreIds = genreIds;
     }
 
@@ -102,11 +104,11 @@ public class MovieModel {
     }
 
 
-    public int getVoteAverage() {
+    public String getVoteAverage() {
         return voteAverage;
     }
 
-    public void setVoteAverage(int voteAverage) {
+    public void setVoteAverage(String voteAverage) {
         this.voteAverage = voteAverage;
     }
 
