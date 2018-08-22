@@ -2,7 +2,6 @@ package com.example.sam.moviebox.activities;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +55,7 @@ public class MainRecyclerAdapter extends
     class MainRecyclerViewAdapter extends RecyclerView.ViewHolder {
 
         TextView tv_vote_average;
-        ImageView im_movie_poster;
+        ImageView iv_movie_poster;
         IMovieModel movieModel = new MovieModel();
         private JSONObject movieObject;
         private String averageVote;
@@ -64,7 +63,7 @@ public class MainRecyclerAdapter extends
         public MainRecyclerViewAdapter(View mainView) {
             super(mainView);
             tv_vote_average = mainView.findViewById(R.id.tv_movie_vote_average);
-            im_movie_poster = mainView.findViewById(R.id.im_movie_image_poster);
+            iv_movie_poster = mainView.findViewById(R.id.iv_movie_image_poster);
 
         }
 
@@ -97,11 +96,18 @@ public class MainRecyclerAdapter extends
                                movieModel.getPosterPath())
                         .fit()
                         .centerCrop()
-                        .into(im_movie_poster);
+                        .into(iv_movie_poster);
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+            iv_movie_poster.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Code for the next Activity
+                }
+            });
         }
 
 

@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(JSONArray jsonArray) {
-            if (jsonArray != null && !jsonArray.equals("")) {
+            if (jsonArray != null) {
 
                 mRecyclerView.setHasFixedSize(true);
                 mRecyclerView.setLayoutManager(mLayoutManager);
