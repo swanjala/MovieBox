@@ -30,7 +30,6 @@ public class MainRecyclerAdapter extends
         this.context = context;
         this.mDataSet = movieData;
         this.layoutInflater = LayoutInflater.from(context);
-        MovieModel movieModel = new MovieModel();
     }
 
     @Override
@@ -59,11 +58,7 @@ public class MainRecyclerAdapter extends
         TextView tv_vote_average;
         ImageView im_movie_poster;
         IMovieModel movieModel = new MovieModel();
-
-        int position;
         private JSONObject movieObject;
-
-        private String movieTitle;
         private String averageVote;
 
         public MainRecyclerViewAdapter(View mainView) {
