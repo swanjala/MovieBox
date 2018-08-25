@@ -22,21 +22,21 @@ public class MainRecyclerAdapter extends
         RecyclerView.Adapter<MainRecyclerAdapter.MainRecyclerViewAdapter>{
 
     private JSONArray mDataSet;
-    private LayoutInflater layoutInflater;
     private Context context;
 
 
     public MainRecyclerAdapter(Context context, JSONArray movieData) {
         this.context = context;
         this.mDataSet = movieData;
-        this.layoutInflater = LayoutInflater.from(context);
     }
 
     @Override
     public MainRecyclerViewAdapter onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = layoutInflater.inflate(R.layout.recyclerview_movie_item_row,
-                parent, false);
+        View view = LayoutInflater
+                .from(parent.getContext())
+                .inflate(R.layout.recyclerview_movie_item_row, null);
+
         MainRecyclerViewAdapter viewHolder = new MainRecyclerViewAdapter(view);
         return viewHolder;
     }
@@ -63,7 +63,6 @@ public class MainRecyclerAdapter extends
 
         public MainRecyclerViewAdapter(View mainView) {
             super(mainView);
-            tv_vote_average = mainView.findViewById(R.id.tv_movie_vote_average);
             iv_movie_poster = mainView.findViewById(R.id.iv_movie_image_poster);
 
         }
@@ -89,14 +88,11 @@ public class MainRecyclerAdapter extends
                 movieModel.setReleaseDate(movieObject.getString("release_date"));
 
                 this.averageVote = movieModel.getVoteAverage();
-
-                tv_vote_average.setText(averageVote);
                 Picasso.with(context)
                         .load(context.getString(R.string.base_poster_url) +
-                                context.getString(R.string.poster_size_path_w185) +
+                                context.getString(R.string.poster_size_path_original) +
                                movieModel.getPosterPath())
                         .fit()
-                        .centerCrop()
                         .into(iv_movie_poster);
 
             } catch (JSONException e) {
