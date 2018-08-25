@@ -1,8 +1,13 @@
 package com.example.sam.moviebox.activities;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -10,6 +15,8 @@ import com.example.sam.moviebox.moviewModels.IMovieModel;
 import com.example.sam.moviebox.moviewModels.MovieModel;
 
 import com.example.sam.moviebox.R;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,9 +28,15 @@ public class DetailsActivity extends AppCompatActivity {
     TextView tv_has_video,tv_title,tv_popularity, tv_original_language,
             tv_genre_ids,tv_adult,tv_overview, tv_release_dates;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_details);
         tv_has_video = findViewById(R.id.tv_video);
         tv_title= findViewById(R.id.tv_title);
@@ -32,7 +45,8 @@ public class DetailsActivity extends AppCompatActivity {
         tv_genre_ids  = findViewById(R.id.tv_genre_ids);
         tv_adult=findViewById(R.id.tv_adult);
         tv_overview=findViewById(R.id.tv_overview);
-        tv_release_dates= findViewById(R.id.tv_release_dates); ;
+        tv_release_dates= findViewById(R.id.tv_release_dates);
+        iv_poster= findViewById(R.id.iv_moview_poster);
 
 
 
@@ -42,6 +56,11 @@ public class DetailsActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        populateUI();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
         populateUI();
     }
 
@@ -67,12 +86,25 @@ public class DetailsActivity extends AppCompatActivity {
         tv_has_video.setText(movieModel.getVoteAverage());
         tv_has_video.setText(String.valueOf(movieModel.isVideo()));
         tv_title.setText(movieModel.getTitle());
-//        tv_popularity.setText(movieModel.getPopularity());
+        tv_title.bringToFront();
+        tv_popularity.setText(String.valueOf(movieModel.getVoteAverage()));
         tv_original_language.setText(movieModel.getOriginalLanguage());
         tv_genre_ids.setText(String.valueOf(movieModel.getGenreIds()));
         tv_adult.setText(String.valueOf(movieModel.isAdultFilm()));
         tv_overview.setText(movieModel.getOverview());
+        tv_overview.bringToFront();
         tv_release_dates.setText(movieModel.getReleaseDate());
+        Log.d("posterpath", this.getString(R.string.base_poster_url)+this.getString(R.string.poster_size_path_w185)
+                + movieModel.getBackdropPath()
+                 );
+
+        Picasso.with(this)
+                .load(this.getString(R.string.base_poster_url)
+                        +this.getString(R.string.poster_size_path_original)
+                        + movieModel.getBackdropPath())
+                .fit()
+                .centerCrop()
+                .into(iv_poster);
 
 
     }
