@@ -23,5 +23,9 @@ public interface INetworkCalls {
 
     JSONArray dataResults() throws IOException, JSONException;
 
+    HttpGet getMovieGenres() throws MalformedURLException;
+
+    JSONArray genreResults()throws IOException, JSONException;
+
 
 }
