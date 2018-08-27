@@ -54,5 +54,9 @@ public interface IMovieModel {
     int getId();
 
     void setId(int id);
+    void setGenreNames(String genres);
+    String getGenreNames();
+
+
 }
 
