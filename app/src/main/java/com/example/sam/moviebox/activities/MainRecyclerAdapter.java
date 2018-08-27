@@ -3,6 +3,7 @@ package com.example.sam.moviebox.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,16 +19,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class MainRecyclerAdapter extends
         RecyclerView.Adapter<MainRecyclerAdapter.MainRecyclerViewAdapter>{
 
-    private JSONArray mDataSet;
+    private JSONArray mDataSet,genreData;
     private Context context;
 
 
-    public MainRecyclerAdapter(Context context, JSONArray movieData) {
+    public MainRecyclerAdapter(Context context, JSONArray movieData, JSONArray genreData) {
         this.context = context;
         this.mDataSet = movieData;
+        this.genreData = genreData;
     }
 
     @Override
@@ -44,7 +49,11 @@ public class MainRecyclerAdapter extends
     @Override
     public void onBindViewHolder(MainRecyclerViewAdapter holder, int position) {
 
-        holder.setMovieData(mDataSet, position);
+        try {
+            holder.setMovieData(mDataSet,genreData, position);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -59,6 +68,7 @@ public class MainRecyclerAdapter extends
         ImageView iv_movie_poster;
         IMovieModel movieModel = new MovieModel();
         private JSONObject movieObject;
+        private JSONArray genreNameData;
         private String averageVote;
 
         public MainRecyclerViewAdapter(View mainView) {
@@ -67,11 +77,18 @@ public class MainRecyclerAdapter extends
 
         }
 
-        public void setMovieData(final JSONArray currentData, final int position) {
+        public void setMovieData(final JSONArray currentData,final JSONArray genreData, final int position)
+                throws JSONException {
+
+            this.movieObject = currentData.getJSONObject(position);
+
+            this.genreNameData = genreData;
+            String genreNames = "";
+            Log.d("Data for genre",String.valueOf(genreNameData));
+;
+
 
             try {
-
-                this.movieObject = currentData.getJSONObject(position);
 
                 movieModel.setVoteAverage(movieObject.getString("vote_average"));
                 movieModel.setId(movieObject.getInt("id"));
@@ -86,6 +103,8 @@ public class MainRecyclerAdapter extends
                 movieModel.setAdultFilm(movieObject.getBoolean("adult"));
                 movieModel.setOverview(movieObject.getString("overview"));
                 movieModel.setReleaseDate(movieObject.getString("release_date"));
+
+
 
                 this.averageVote = movieModel.getVoteAverage();
                 Picasso.with(context)
@@ -104,6 +123,7 @@ public class MainRecyclerAdapter extends
                 public void onClick(View view) {
                     Intent detailsIntent = new Intent(context, DetailsActivity.class);
                     detailsIntent.putExtra("movie_data", movieObject.toString());
+                    detailsIntent.putExtra("genres",genreNameData.toString());
                     context.startActivity(detailsIntent);
                 }
             });
