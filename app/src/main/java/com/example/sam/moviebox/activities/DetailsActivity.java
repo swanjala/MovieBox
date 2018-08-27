@@ -2,6 +2,7 @@ package com.example.sam.moviebox.activities;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import com.example.sam.moviebox.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,8 +27,8 @@ public class DetailsActivity extends AppCompatActivity {
     private final IMovieModel movieModel = new MovieModel();
 
     ImageView iv_poster;
-    TextView tv_has_video,tv_title,tv_popularity, tv_original_language,
-            tv_genre_ids,tv_adult,tv_overview, tv_release_dates;
+    TextView tv_title,tv_popularity, tv_original_language,
+            tv_genre_ids,tv_overview, tv_release_dates;
 
 
 
@@ -38,21 +40,17 @@ public class DetailsActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_details);
-        tv_has_video = findViewById(R.id.tv_video);
         tv_title= findViewById(R.id.tv_title);
         tv_popularity = findViewById(R.id.tv_popularity);
         tv_original_language = findViewById(R.id.tv_original_language);
         tv_genre_ids  = findViewById(R.id.tv_genre_ids);
-        tv_adult=findViewById(R.id.tv_adult);
         tv_overview=findViewById(R.id.tv_overview);
         tv_release_dates= findViewById(R.id.tv_release_dates);
         iv_poster= findViewById(R.id.iv_moview_poster);
-
-
-
         try {
             JSONObject movieObject = new JSONObject(getIntent().getStringExtra("movie_data"));
-            populateModel(movieObject);
+            JSONArray genreName = new JSONArray(getIntent().getStringExtra("genres"));
+            populateModel(movieObject,genreName);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -64,7 +62,9 @@ public class DetailsActivity extends AppCompatActivity {
         populateUI();
     }
 
-    private void populateModel(JSONObject jsonObject) throws JSONException {
+    private void populateModel(JSONObject jsonObject, JSONArray genreArrayNames) throws JSONException {
+
+        String genreNames = "";
 
         movieModel.setVoteAverage(jsonObject.getString("vote_average"));
         movieModel.setId(jsonObject.getInt("id"));
@@ -77,20 +77,46 @@ public class DetailsActivity extends AppCompatActivity {
         movieModel.setPosterPath(jsonObject.getString("poster_path"));
         movieModel.setBackdropPath(jsonObject.getString("backdrop_path"));
         movieModel.setAdultFilm(jsonObject.getBoolean("adult"));
-        movieModel.setOverview(jsonObject.getString("overview"));
+        movieModel.setOverview(jsonObject.getString("overview").trim());
         movieModel.setReleaseDate(jsonObject.getString("release_date"));
+
+        JSONArray genreIds = movieModel.getGenreIds();
+        Log.d("genre Ids",String.valueOf(genreIds));
+        for (int i = 0; i < genreIds.length() ; i++) {
+            int genreid = genreIds.getInt(i);
+
+            for (int counter = 0; counter < genreArrayNames.length(); counter++) {
+                int id = genreArrayNames.getJSONObject(counter).getInt("id");
+
+                Log.d("genre name data Id ",String.valueOf(id));
+                Log.d("genre Ids",String.valueOf(genreid));
+
+                if (id == genreid){
+                    String genre = genreArrayNames.getJSONObject(i).getString("name");
+
+                    genreNames = genreNames.concat(genre).concat(" . ");
+                    Log.d("actual genre", genreNames);
+                }
+
+            }
+
+        }
+        Log.d("genre names", genreNames);
+        movieModel.setGenreNames(genreNames);
+
+       // Log.d("movie Object", movieObject.toString());
     }
 
     private void populateUI(){
 
-        tv_has_video.setText(movieModel.getVoteAverage());
-        tv_has_video.setText(String.valueOf(movieModel.isVideo()));
+//        tv_has_video.setText(movieModel.getVoteAverage());
+//        tv_has_video.setText(String.valueOf(movieModel.isVideo()));
         tv_title.setText(movieModel.getTitle());
         tv_title.bringToFront();
         tv_popularity.setText(String.valueOf(movieModel.getVoteAverage()));
         tv_original_language.setText(movieModel.getOriginalLanguage());
-        tv_genre_ids.setText(String.valueOf(movieModel.getGenreIds()));
-        tv_adult.setText(String.valueOf(movieModel.isAdultFilm()));
+        tv_genre_ids.setText(String.valueOf(movieModel.getGenreNames()));
+//        tv_adult.setText(String.valueOf(movieModel.isAdultFilm()));
         tv_overview.setText(movieModel.getOverview());
         tv_overview.bringToFront();
         tv_release_dates.setText(movieModel.getReleaseDate());
@@ -108,5 +134,6 @@ public class DetailsActivity extends AppCompatActivity {
 
 
     }
+
 
 }
