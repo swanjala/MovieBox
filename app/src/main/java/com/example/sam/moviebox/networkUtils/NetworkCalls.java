@@ -23,6 +23,7 @@ public class NetworkCalls implements INetworkCalls {
     private Context context;
     public JSONArray dataStringResult;
     public JSONArray genreDataString;
+    public JSONArray trailerData;
 
     public NetworkCalls(Context context) {
         BASE_MOVIE_API_V3_URL = context.getString(R.string.base_movie_url_api_v3);
@@ -59,6 +60,15 @@ public class NetworkCalls implements INetworkCalls {
      return httpGetGenres;
     }
 
+    @Override
+    public HttpGet getMovieTrailers(String id) throws MalformedURLException {
+        HttpGet httpGetTrailer =
+                new HttpGet("https://api.themoviedb.org/3/movie/" +
+                        id +
+                        "/videos?api_key=64005791bbe3ddeac2a29edd82bcafb4&language=en-US");
+        return httpGetTrailer;
+    }
+
     public JSONArray getNetworkData() throws IOException, JSONException {
 
         HttpResponse dataResponse = httpClient.execute(getMoviesObject());
@@ -77,6 +87,16 @@ public class NetworkCalls implements INetworkCalls {
         JSONObject jsonObjectGenres = new JSONObject(genreDataString);
 
         return this.genreDataString = jsonObjectGenres.getJSONArray("genres");
+
+    }
+
+    public JSONArray getTrailers(String id) throws IOException, JSONException {
+        HttpResponse trailerReponse = httpClient.execute(getMovieTrailers(id));
+        String trailerDateString = EntityUtils.toString(trailerReponse.getEntity());
+
+        JSONObject jsonObectTrailers = new JSONObject(trailerDateString);
+
+        return this.trailerData = jsonObectTrailers.getJSONArray("results");
 
     }
 

@@ -6,7 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     >
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,11 +16,11 @@
 
         <ImageView
             android:id="@+id/iv_moview_poster"
-            android:layout_width="match_parent"
-            android:layout_height="600dp"
+            android:layout_width="427dp"
+            android:layout_height="416dp"
             android:foreground="@drawable/foreground_gradient"
-            tools:layout_editor_absoluteX="45dp"
-            tools:layout_editor_absoluteY="0dp" />
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="48dp" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -42,7 +43,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.849" />
+            app:layout_constraintVertical_bias="0.799" />
 
         <TextView
             android:id="@+id/tv_release_dates"
@@ -131,14 +132,11 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="464dp"
             android:hint="Overview"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.025"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.44" />
+            app:layout_constraintStart_toStartOf="parent" />
 
 
         <ImageView
@@ -153,6 +151,19 @@
             app:layout_constraintTop_toTopOf="@+id/tv_popularity"
             app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/ic_star_black_24dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_trailer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
+
 
 
     </android.support.constraint.ConstraintLayout>
