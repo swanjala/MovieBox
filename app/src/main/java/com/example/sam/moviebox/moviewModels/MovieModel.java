@@ -3,6 +3,7 @@ package com.example.sam.moviebox.moviewModels;
 import org.json.JSONArray;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class MovieModel implements IMovieModel {
 
@@ -19,6 +20,7 @@ public class MovieModel implements IMovieModel {
     private String backdropPath;
     private String overview;
     private String releaseDate;
+    private String genreNames;
 
     public String getTitle() {
         return title;
@@ -60,7 +62,7 @@ public class MovieModel implements IMovieModel {
         this.originalTitle = originalTitle;
     }
 
-    public JSONArray getGenreIds(JSONArray genre_ids) {
+    public JSONArray getGenreIds() {
         return genreIds;
     }
 
@@ -126,6 +128,14 @@ public class MovieModel implements IMovieModel {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setGenreNames(String genres){
+        this.genreNames = genres;
+
+    }
+    public String getGenreNames(){
+        return this.genreNames;
     }
 
 
