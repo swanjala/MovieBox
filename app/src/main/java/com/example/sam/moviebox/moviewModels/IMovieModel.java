@@ -4,6 +4,7 @@ import org.json.JSONArray;
 
 public interface IMovieModel {
 
+    String getTitle();
     void setTitle(String title);
 
     int getPopularity();
@@ -22,7 +23,7 @@ public interface IMovieModel {
 
     void setOriginalTitle(String originalTitle);
 
-    JSONArray getGenreIds(JSONArray genre_ids);
+    JSONArray getGenreIds();
 
     void setGenreIds(JSONArray genreIds);
 
@@ -53,5 +54,9 @@ public interface IMovieModel {
     int getId();
 
     void setId(int id);
+    void setGenreNames(String genres);
+    String getGenreNames();
+
+
 }
 
