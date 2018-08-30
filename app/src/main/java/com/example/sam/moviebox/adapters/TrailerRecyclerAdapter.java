@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 public class TrailerRecyclerAdapter extends
         RecyclerView.Adapter<TrailerRecyclerAdapter.TrailerRecyclerViewAdapter>{
+    /* To be implemented in stage 2*/
 
     private JSONArray trailerData;
 
