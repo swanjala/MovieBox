@@ -1,7 +1,6 @@
-package com.example.sam.moviebox.activities;
+package com.example.sam.moviebox.adapters;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;

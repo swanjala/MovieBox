@@ -2,5 +2,9 @@
 <resources>
     <color name="colorPrimary">#000000</color>
     <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#ec0004</color>
+    <color name="botton_shape_border_solid_color">#00000000</color>
+    <color name="botton_shape_border_stroke_color">#ec0004</color>
+    <color name="shape_gradient_start_color">#00FFFFFF</color>
+    <color name="shape_gradient_end_color">#000000</color>
 </resources>

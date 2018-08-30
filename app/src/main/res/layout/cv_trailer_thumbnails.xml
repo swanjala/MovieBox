@@ -8,12 +8,12 @@
 
     <VideoView
         android:id="@+id/vv_trailer_view"
-        android:layout_width="162dp"
-        android:layout_height="154dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="@dimen/card_view_thumbnail_videoview_layout_width"
+        android:layout_height="@dimen/card_view_thumbnail_videoview_layout_height"
+        android:layout_marginEnd="@dimen/card_view_thumbnail_videoview_margin_end"
+        android:layout_marginLeft="@dimen/card_view_thumbnail_videoview_margin_left"
+        android:layout_marginRight="@dimen/card_view_thumbnail_videoview_margin_right"
+        android:layout_marginStart="@dimen/card_view_thumbnail_videoview_margin_start"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
