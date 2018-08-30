@@ -1,4 +1,4 @@
-package com.example.sam.moviebox.networkUtils;
+package com.example.sam.moviebox.classInterfaces;
 
 
 import org.apache.http.client.HttpClient;
@@ -14,8 +14,6 @@ import java.net.URL;
 public interface INetworkCalls {
 
     HttpClient httpClient = new DefaultHttpClient();
-
-    URL setURI(String path, String apiKey) throws IOException;
 
     HttpGet getMoviesObject() throws MalformedURLException;
 

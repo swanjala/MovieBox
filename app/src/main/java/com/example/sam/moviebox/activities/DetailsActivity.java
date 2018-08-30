@@ -1,46 +1,40 @@
 package com.example.sam.moviebox.activities;
 
-import android.app.ActionBar;
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.sam.moviebox.jsonUtils.IJsonUtils;
+import com.example.sam.moviebox.classInterfaces.IJsonUtils;
+import com.example.sam.moviebox.classInterfaces.IUrlBuilder;
 import com.example.sam.moviebox.jsonUtils.JsonUtils;
-import com.example.sam.moviebox.moviewModels.IMovieModel;
+import com.example.sam.moviebox.classInterfaces.IMovieModel;
 import com.example.sam.moviebox.moviewModels.MovieModel;
 
 import com.example.sam.moviebox.R;
-import com.example.sam.moviebox.networkUtils.INetworkCalls;
+import com.example.sam.moviebox.classInterfaces.INetworkCalls;
 import com.example.sam.moviebox.networkUtils.NetworkCalls;
-import com.squareup.picasso.Callback;
+import com.example.sam.moviebox.networkUtils.UrlBuilder;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.net.MalformedURLException;
 
 public class DetailsActivity extends AppCompatActivity {
+
+    private static final String MOVIE_DATA = "movie_data", GENRES = "genres";
 
     ImageView iv_poster;
     TextView tv_title, tv_popularity, tv_original_language,
             tv_genre_ids, tv_overview, tv_release_dates;
     IJsonUtils jsonUtils = new JsonUtils();
-
     IMovieModel movieModel = new MovieModel();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,17 +49,25 @@ public class DetailsActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        populateUI();
+        try {
+            populateUI();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        try {
             populateUI();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void loadUI(){
+    private void loadUI() {
         tv_title = findViewById(R.id.tv_title);
         tv_popularity = findViewById(R.id.tv_popularity);
         tv_original_language = findViewById(R.id.tv_original_language);
@@ -79,20 +81,23 @@ public class DetailsActivity extends AppCompatActivity {
     private void setData() throws JSONException {
         JSONObject movieObject = null;
         try {
-            movieObject = new JSONObject(this.getIntent().getStringExtra("movie_data"));
+            movieObject = new JSONObject(this.getIntent().getStringExtra(MOVIE_DATA));
         } catch (JSONException e) {
             e.printStackTrace();
         }
         JSONArray genreName = null;
         try {
-            genreName = new JSONArray(this.getIntent().getStringExtra("genres"));
+            genreName = new JSONArray(this.getIntent().getStringExtra(GENRES));
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        movieModel = jsonUtils.modelBuilder(movieObject,genreName);
+        movieModel = jsonUtils.modelBuilder(movieObject, genreName);
     }
-    private void populateUI(){
+
+    private void populateUI() throws MalformedURLException {
+
+        IUrlBuilder urlBuilder = new UrlBuilder(this);
 
         tv_title.setText(movieModel.getTitle());
         tv_title.bringToFront();
@@ -102,21 +107,14 @@ public class DetailsActivity extends AppCompatActivity {
         tv_overview.setText(movieModel.getOverview());
         tv_overview.bringToFront();
         tv_release_dates.setText(movieModel.getReleaseDate());
-        Log.d("posterpath", this.getString(R.string.base_poster_url) + this.getString(R.string.poster_size_path_w185)
-                + movieModel.getBackdropPath()
-        );
 
         Picasso.with(this)
-                .load(this.getString(R.string.base_poster_url)
-                        + this.getString(R.string.poster_size_path_original)
-                        + movieModel.getBackdropPath())
+                .load(String.valueOf(urlBuilder.buildPosterURL(this
+                                .getString(R.string.poster_size_path_original),
+                                movieModel.getBackdropPath())))
                 .fit()
                 .centerCrop()
                 .into(iv_poster);
 
-
     }
-
-
-
 }

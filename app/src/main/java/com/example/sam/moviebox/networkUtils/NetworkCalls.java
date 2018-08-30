@@ -1,12 +1,12 @@
 package com.example.sam.moviebox.networkUtils;
 
 import android.content.Context;
-import android.net.Uri;
-import android.util.Log;
 
 
 import com.example.sam.moviebox.R;
-import com.example.sam.moviebox.jsonUtils.IJsonUtils;
+import com.example.sam.moviebox.classInterfaces.IJsonUtils;
+import com.example.sam.moviebox.classInterfaces.INetworkCalls;
+import com.example.sam.moviebox.classInterfaces.IUrlBuilder;
 import com.example.sam.moviebox.jsonUtils.JsonUtils;
 
 import org.apache.http.HttpResponse;
@@ -14,34 +14,30 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 
 public class NetworkCalls implements INetworkCalls {
-    private static String BASE_MOVIE_API_V3_URL = null;
+
+    private static final String RESULTS = "results";
+    private static final String GENRES = "genres";
+
     private Context context;
 
     IJsonUtils jsonUtils = new JsonUtils();
+    IUrlBuilder urlBuilder;
 
-    public NetworkCalls(Context context) {
-        BASE_MOVIE_API_V3_URL = context.getString(R.string.base_movie_url_api_v3);
+
+    public NetworkCalls(Context context){
         this.context = context;
+        this.urlBuilder = new UrlBuilder(context);
     }
 
-    public URL setURI(String path, String apiKey) throws MalformedURLException {
+    public JSONArray getNetworkData() throws IOException, JSONException {
 
-        Uri loadMovieDataUri = Uri.parse(BASE_MOVIE_API_V3_URL)
-                .buildUpon()
-                .appendEncodedPath(path.concat(apiKey))
-                .build();
-        Log.d("Url", loadMovieDataUri.toString());
-
-        Log.d("setup ret",String.valueOf(new URL(loadMovieDataUri.toString())));
-
-        return new URL(loadMovieDataUri.toString());
+        return jsonUtils.genericNetworkJsonParser(networkHelper(getMoviesObject()),
+                RESULTS);
 
     }
     public JSONArray dataResults() throws IOException, JSONException {
@@ -53,48 +49,16 @@ public class NetworkCalls implements INetworkCalls {
     }
 
 
-    @Override
-    public HttpGet getMoviesObject() throws MalformedURLException {
-
-        HttpGet httpGetObject = new HttpGet(String.valueOf(setURI(
-                context.getString(R.string.popular_url_path, context),
-                context.getString(R.string.api_key))));
-        return httpGetObject;
-    }
-
-    @Override
-    public HttpGet getMovieGenres() throws MalformedURLException {
-        HttpGet httpGetGenres =
-                new HttpGet("https://api.themoviedb.org/3/genre/movie/list?api_key=64005791bbe3ddeac2a29edd82bcafb4&language=en-US");
-     return httpGetGenres;
-    }
-
-    @Override
-    public HttpGet getMovieTrailers(String id) throws MalformedURLException {
-        HttpGet httpGetTrailer =
-                new HttpGet("https://api.themoviedb.org/3/movie/" +
-                        id +
-                        "/videos?api_key=64005791bbe3ddeac2a29edd82bcafb4&language=en-US");
-        return httpGetTrailer;
-    }
-
-    public JSONArray getNetworkData() throws IOException, JSONException {
-
-        return jsonUtils.genericNetworkJsonParser(networkHelper(getMoviesObject()),
-                "results");
-
-    }
-
     public JSONArray getGenresData() throws IOException, JSONException{
 
         return jsonUtils.genericNetworkJsonParser(networkHelper(getMovieGenres()),
-                "genres");
+                GENRES);
     }
 
     public JSONArray getTrailers(String id) throws IOException, JSONException {
 
         return jsonUtils.genericNetworkJsonParser(networkHelper(getMovieTrailers(id)),
-                "results");
+                RESULTS);
     }
 
     private String networkHelper(HttpGet getMethod) throws IOException {
@@ -103,4 +67,30 @@ public class NetworkCalls implements INetworkCalls {
         return  EntityUtils.toString(networkResponse.getEntity());
     }
 
+    @Override
+    public HttpGet getMoviesObject() throws MalformedURLException {
+
+        HttpGet httpGetObject = new HttpGet(String.valueOf(urlBuilder.buildURL(
+                context.getString(R.string.popular_url_path),
+                context.getString(R.string.api_key))));
+        return httpGetObject;
+    }
+
+    @Override
+    public HttpGet getMovieGenres() throws MalformedURLException {
+        HttpGet httpGetGenres =
+                new HttpGet(String.valueOf(urlBuilder
+                        .buildGenreUrl(context.getString(R.string.list_path_url),
+                        context.getString(R.string.api_key))));
+         return httpGetGenres;
+    }
+
+    @Override
+    public HttpGet getMovieTrailers(String id) throws MalformedURLException {
+        HttpGet httpGetTrailer =
+                new HttpGet( String.valueOf(urlBuilder.buildUrlWithID(id,
+                        context.getString(R.string.videos_path_url),
+                        context.getString(R.string.api_key))));
+        return httpGetTrailer;
+    }
 }

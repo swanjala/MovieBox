@@ -3,7 +3,6 @@ package com.example.sam.moviebox.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,18 +10,24 @@ import android.widget.ImageView;
 
 import com.example.sam.moviebox.R;
 import com.example.sam.moviebox.activities.DetailsActivity;
-import com.example.sam.moviebox.moviewModels.IMovieModel;
+import com.example.sam.moviebox.classInterfaces.IMovieModel;
+import com.example.sam.moviebox.classInterfaces.IUrlBuilder;
 import com.example.sam.moviebox.moviewModels.MovieModel;
+import com.example.sam.moviebox.classInterfaces.INetworkCalls;
+import com.example.sam.moviebox.networkUtils.NetworkCalls;
+import com.example.sam.moviebox.networkUtils.UrlBuilder;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainRecyclerAdapter extends
-        RecyclerView.Adapter<MainRecyclerAdapter.MainRecyclerViewAdapter>{
+import java.net.MalformedURLException;
 
-    private JSONArray mDataSet,genreData;
+public class MainRecyclerAdapter extends
+        RecyclerView.Adapter<MainRecyclerAdapter.MainRecyclerViewAdapter> {
+
+    private JSONArray mDataSet, genreData;
     private Context context;
 
 
@@ -47,7 +52,7 @@ public class MainRecyclerAdapter extends
     public void onBindViewHolder(MainRecyclerViewAdapter holder, int position) {
 
         try {
-            holder.setMovieData(mDataSet,genreData, position);
+            holder.setMovieData(mDataSet, genreData, position);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -65,7 +70,8 @@ public class MainRecyclerAdapter extends
         IMovieModel movieModel = new MovieModel();
         private JSONObject movieObject;
         private JSONArray genreNameData;
-        private String averageVote;
+
+        private static final String MOVIE_DATA = "movie_data", GENRES = "genres";
 
         public MainRecyclerViewAdapter(View mainView) {
             super(mainView);
@@ -73,38 +79,56 @@ public class MainRecyclerAdapter extends
 
         }
 
-        public void setMovieData(final JSONArray currentData,final JSONArray genreData, final int position)
-                throws JSONException {
+        public void setMovieData(final JSONArray currentData,
+                                 final JSONArray genreData,
+                                 final int position) throws JSONException {
+
+            IUrlBuilder urlBuilder = new UrlBuilder(context,
+                    context.getString(R.string.base_poster_url));
 
             this.movieObject = currentData.getJSONObject(position);
 
             this.genreNameData = genreData;
-            String genreNames = "";
-            Log.d("Data for genre",String.valueOf(genreNameData));
 
             try {
 
-                movieModel.setVoteAverage(movieObject.getString("vote_average"));
-                movieModel.setId(movieObject.getInt("id"));
-                movieModel.setVideo(movieObject.getBoolean("video"));
-                movieModel.setTitle(movieObject.getString("title"));
-                movieModel.setPopularity(movieObject.getInt("popularity"));
-                movieModel.setOriginalLanguage(movieObject.getString("original_language"));
-                movieModel.setOriginalTitle(movieObject.getString("original_title"));
-                movieModel.setGenreIds(movieObject.getJSONArray("genre_ids"));
-                movieModel.setPosterPath(movieObject.getString("poster_path"));
-                movieModel.setBackdropPath(movieObject.getString("backdrop_path"));
-                movieModel.setAdultFilm(movieObject.getBoolean("adult"));
-                movieModel.setOverview(movieObject.getString("overview"));
-                movieModel.setReleaseDate(movieObject.getString("release_date"));
+                movieModel.setVoteAverage(movieObject
+                        .getString(context.getString(R.string.movie_object_vote_average)));
+                movieModel.setId(movieObject
+                        .getInt(context.getString(R.string.movie_object_id)));
+                movieModel.setVideo(movieObject
+                        .getBoolean(context.getString(R.string.movie_object_video)));
+                movieModel.setTitle(movieObject.getString(context
+                        .getString(R.string.movie_object_title)));
+                movieModel.setPopularity(movieObject.getInt(context
+                        .getString(R.string.movie_object_popularity)));
+                movieModel.setOriginalLanguage(movieObject.getString(context
+                        .getString(R.string.movie_object_original_language)));
+                movieModel.setOriginalTitle(movieObject.getString(context
+                        .getString(R.string.movie_object_original_title)));
+                movieModel.setGenreIds(movieObject
+                        .getJSONArray(context.getString(R.string.movie_object_genre_ids)));
+                movieModel.setPosterPath(movieObject
+                        .getString(context.getString(R.string.movie_object_poster_path)));
+                movieModel.setBackdropPath(movieObject
+                        .getString(context.getString(R.string.movie_object_backdrop_path)));
+                movieModel.setAdultFilm(movieObject
+                        .getBoolean(context.getString(R.string.movie_object_adult)));
+                movieModel.setOverview(movieObject
+                        .getString(context.getString(R.string.movie_object_overview)));
+                movieModel.setReleaseDate(movieObject
+                        .getString(context.getString(R.string.movie_object_release_dates)));
 
-                this.averageVote = movieModel.getVoteAverage();
-                Picasso.with(context)
-                        .load(context.getString(R.string.base_poster_url) +
-                                context.getString(R.string.poster_size_path_original) +
-                               movieModel.getPosterPath())
-                        .fit()
-                        .into(iv_movie_poster);
+                try {
+                    Picasso.with(context)
+                            .load(String.valueOf(urlBuilder.buildPosterURL(context
+                                            .getString(R.string.poster_size_path_original),
+                                    movieModel.getPosterPath())))
+                            .fit()
+                            .into(iv_movie_poster);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -114,8 +138,8 @@ public class MainRecyclerAdapter extends
                 @Override
                 public void onClick(View view) {
                     Intent detailsIntent = new Intent(context, DetailsActivity.class);
-                    detailsIntent.putExtra("movie_data", movieObject.toString());
-                    detailsIntent.putExtra("genres",genreNameData.toString());
+                    detailsIntent.putExtra(MOVIE_DATA, movieObject.toString());
+                    detailsIntent.putExtra(GENRES, genreNameData.toString());
                     context.startActivity(detailsIntent);
                 }
             });

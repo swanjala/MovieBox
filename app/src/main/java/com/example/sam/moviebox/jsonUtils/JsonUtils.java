@@ -1,9 +1,7 @@
 package com.example.sam.moviebox.jsonUtils;
 
-import android.content.Context;
-import android.util.Log;
-
-import com.example.sam.moviebox.moviewModels.IMovieModel;
+import com.example.sam.moviebox.classInterfaces.IJsonUtils;
+import com.example.sam.moviebox.classInterfaces.IMovieModel;
 import com.example.sam.moviebox.moviewModels.MovieModel;
 
 import org.json.JSONArray;
@@ -15,9 +13,24 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class JsonUtils implements IJsonUtils{
+public class JsonUtils implements IJsonUtils {
 
     private final IMovieModel movieModel = new MovieModel();
+    private static final String
+            VOTE_AVERAGE = "vote_average",
+            ID = "id",
+            NAME = "name",
+            VIDEO= "video",
+            TITLE= "title",
+            POPULARITY= "popularity",
+            ORIGINAL_LANGUAGE= "original_language",
+            ORIGINAL_TITLE ="original_title",
+            GENRE_ID="genre_ids",
+            POSTER_PATH= "poster_path",
+            BACK_DROP="backdrop_path",
+            ADULT="adult",
+            OVERVIEW= "overview",
+            RELEASE_DATE="release_date";
 
     public JSONArray genericNetworkJsonParser(String jsonString, String responseLabel)
             throws JSONException {
@@ -45,8 +58,8 @@ public class JsonUtils implements IJsonUtils{
             public int compare(JSONObject firstDataObject, JSONObject secondDataObject ) {
                 try {
 
-                    comparator = secondDataObject.getString("vote_average")
-                            .compareTo( firstDataObject.getString("vote_average"));
+                    comparator = secondDataObject.getString(VOTE_AVERAGE)
+                            .compareTo( firstDataObject.getString(VOTE_AVERAGE));
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -55,9 +68,7 @@ public class JsonUtils implements IJsonUtils{
             }
         });
 
-
         return new JSONArray(objectList);
-
     }
 
     public IMovieModel modelBuilder(JSONObject jsonObject, JSONArray genreArrayNames)
@@ -65,42 +76,34 @@ public class JsonUtils implements IJsonUtils{
 
         String genreNames = "";
 
-        movieModel.setVoteAverage(jsonObject.getString("vote_average"));
-        movieModel.setId(jsonObject.getInt("id"));
-        movieModel.setVideo(jsonObject.getBoolean("video"));
-        movieModel.setTitle(jsonObject.getString("title"));
-        movieModel.setPopularity(jsonObject.getInt("popularity"));
-        movieModel.setOriginalLanguage(jsonObject.getString("original_language"));
-        movieModel.setOriginalTitle(jsonObject.getString("original_title"));
-        movieModel.setGenreIds(jsonObject.getJSONArray("genre_ids"));
-        movieModel.setPosterPath(jsonObject.getString("poster_path"));
-        movieModel.setBackdropPath(jsonObject.getString("backdrop_path"));
-        movieModel.setAdultFilm(jsonObject.getBoolean("adult"));
-        movieModel.setOverview(jsonObject.getString("overview").trim());
-        movieModel.setReleaseDate(jsonObject.getString("release_date"));
+        movieModel.setVoteAverage(jsonObject.getString(VOTE_AVERAGE));
+        movieModel.setId(jsonObject.getInt(ID));
+        movieModel.setVideo(jsonObject.getBoolean(VIDEO));
+        movieModel.setTitle(jsonObject.getString(TITLE));
+        movieModel.setPopularity(jsonObject.getInt(POPULARITY));
+        movieModel.setOriginalLanguage(jsonObject.getString(ORIGINAL_LANGUAGE));
+        movieModel.setOriginalTitle(jsonObject.getString(ORIGINAL_TITLE));
+        movieModel.setGenreIds(jsonObject.getJSONArray(GENRE_ID));
+        movieModel.setPosterPath(jsonObject.getString(POSTER_PATH));
+        movieModel.setBackdropPath(jsonObject.getString(BACK_DROP));
+        movieModel.setAdultFilm(jsonObject.getBoolean(ADULT));
+        movieModel.setOverview(jsonObject.getString(OVERVIEW).trim());
+        movieModel.setReleaseDate(jsonObject.getString(RELEASE_DATE));
 
         JSONArray genreIds = movieModel.getGenreIds();
-        Log.d("genre Ids", String.valueOf(genreIds));
-        for (int i = 0; i < genreIds.length(); i++) {
-            int genreid = genreIds.getInt(i);
+
+        for (int index = 0; index < genreIds.length(); index++) {
+            int genreid = genreIds.getInt(index);
 
             for (int counter = 0; counter < genreArrayNames.length(); counter++) {
-                int id = genreArrayNames.getJSONObject(counter).getInt("id");
-
-                Log.d("genre name data Id ", String.valueOf(id));
-                Log.d("genre Ids", String.valueOf(genreid));
+                int id = genreArrayNames.getJSONObject(counter).getInt(ID);
 
                 if (id == genreid) {
-                    String genre = genreArrayNames.getJSONObject(i).getString("name");
-
+                    String genre = genreArrayNames.getJSONObject(index).getString(NAME);
                     genreNames = genreNames.concat(genre).concat(" . ");
-                    Log.d("actual genre", genreNames);
                 }
-
             }
-
         }
-        Log.d("genre names", genreNames);
         movieModel.setGenreNames(genreNames);
 
         return  movieModel;
