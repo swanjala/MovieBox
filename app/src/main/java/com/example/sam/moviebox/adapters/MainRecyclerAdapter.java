@@ -3,6 +3,7 @@ package com.example.sam.moviebox.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ public class MainRecyclerAdapter extends
     private JSONArray mDataSet, genreData;
     private Context context;
     private static final String MOVIE_DATA = "movie_data", GENRES = "genres";
+    private static final String LOG_TAG = "Data Error";
 
 
     public MainRecyclerAdapter(Context context, JSONArray movieData, JSONArray genreData) {
@@ -55,7 +57,7 @@ public class MainRecyclerAdapter extends
         try {
             holder.setMovieData(mDataSet, genreData, position);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, e.getMessage(),e);
         }
     }
 
@@ -123,14 +125,16 @@ public class MainRecyclerAdapter extends
                             .load(String.valueOf(urlBuilder.buildPosterURL(context
                                             .getString(R.string.poster_size_path_original),
                                     movieModel.getPosterPath())))
+                            .placeholder(R.mipmap.ic_launcher_foreground)
+                            .error(R.drawable.ic_launcher_background)
                             .fit()
                             .into(iv_movie_poster);
                 } catch (MalformedURLException e) {
-                    e.printStackTrace();
+                    Log.e(LOG_TAG, e.getMessage(),e);
                 }
 
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e(LOG_TAG, e.getMessage(),e);
             }
 
             iv_movie_poster.setOnClickListener(new View.OnClickListener() {
