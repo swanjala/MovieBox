@@ -16,17 +16,10 @@ public class UrlBuilder implements IUrlBuilder {
             BASE_POSTER_URL,
             BASE_GENRE_URL = null;
 
-    private Context context;
-
     public UrlBuilder(Context context){
         BASE_MOVIE_API_V3_URL = context.getString(R.string.base_movie_url_api_v3);
         BASE_GENRE_URL = context.getString(R.string.base_genre_url_api_v3);
-        this.context = context;
-    }
-
-    public UrlBuilder(Context context, String basePosterUrl){
         BASE_POSTER_URL = context.getString(R.string.base_poster_url);
-        this.context = context;
     }
 
     public URL buildURL(String path, String apiKey) throws MalformedURLException {

@@ -29,6 +29,7 @@ public class MainRecyclerAdapter extends
 
     private JSONArray mDataSet, genreData;
     private Context context;
+    private static final String MOVIE_DATA = "movie_data", GENRES = "genres";
 
 
     public MainRecyclerAdapter(Context context, JSONArray movieData, JSONArray genreData) {
@@ -71,7 +72,6 @@ public class MainRecyclerAdapter extends
         private JSONObject movieObject;
         private JSONArray genreNameData;
 
-        private static final String MOVIE_DATA = "movie_data", GENRES = "genres";
 
         public MainRecyclerViewAdapter(View mainView) {
             super(mainView);
@@ -83,8 +83,7 @@ public class MainRecyclerAdapter extends
                                  final JSONArray genreData,
                                  final int position) throws JSONException {
 
-            IUrlBuilder urlBuilder = new UrlBuilder(context,
-                    context.getString(R.string.base_poster_url));
+            IUrlBuilder urlBuilder = new UrlBuilder(context);
 
             this.movieObject = currentData.getJSONObject(position);
 

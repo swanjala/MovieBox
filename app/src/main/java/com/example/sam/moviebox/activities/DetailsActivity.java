@@ -14,8 +14,6 @@ import com.example.sam.moviebox.classInterfaces.IMovieModel;
 import com.example.sam.moviebox.moviewModels.MovieModel;
 
 import com.example.sam.moviebox.R;
-import com.example.sam.moviebox.classInterfaces.INetworkCalls;
-import com.example.sam.moviebox.networkUtils.NetworkCalls;
 import com.example.sam.moviebox.networkUtils.UrlBuilder;
 import com.squareup.picasso.Picasso;
 
@@ -74,7 +72,7 @@ public class DetailsActivity extends AppCompatActivity {
         tv_genre_ids = findViewById(R.id.tv_genre_ids);
         tv_overview = findViewById(R.id.tv_overview);
         tv_release_dates = findViewById(R.id.tv_release_dates);
-        iv_poster = findViewById(R.id.iv_moview_poster);
+        iv_poster = findViewById(R.id.iv_movie_poster);
     }
 
 

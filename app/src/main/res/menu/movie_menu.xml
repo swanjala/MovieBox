@@ -2,5 +2,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/most_popular"
-        android:title="Sort By Most Popular"/>
+        android:title="@string/menu_most_popular_sort_by_most_popular"/>
 </menu>

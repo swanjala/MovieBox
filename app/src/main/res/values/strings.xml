@@ -27,5 +27,11 @@
     <string name="movie_object_release_dates">release_date</string>
     <string name="list_path_url">list?</string>
     <string name="videos_path_url">/videos?</string>
+    <string name="movie_title_hint_text">Movie Title</string>
+    <string name="activity_details_layout_tv_release_dates_hint">Date Released</string>
+    <string name="activity_details_layout_tv_popularity_hint_text">Popularity</string>
+    <string name="activity_details_layout_tv_genre_ids_hint_text">Genre Ids</string>
+    <string name="activity_details_layout_tv_overview_hint_text">Overview</string>
+    <string name="menu_most_popular_sort_by_most_popular">Sort By Most Popular</string>
 
 </resources>
