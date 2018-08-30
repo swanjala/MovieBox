@@ -1,5 +1,7 @@
 package com.example.sam.moviebox.jsonUtils;
 
+import android.util.Log;
+
 import com.example.sam.moviebox.classInterfaces.IJsonUtils;
 import com.example.sam.moviebox.classInterfaces.IMovieModel;
 import com.example.sam.moviebox.moviewModels.MovieModel;
@@ -17,7 +19,7 @@ public class JsonUtils implements IJsonUtils {
 
     private final IMovieModel movieModel = new MovieModel();
     private static final String
-            VOTE_AVERAGE = "vote_average",
+            TOP_RATED = "vote_average",
             ID = "id",
             NAME = "name",
             VIDEO= "video",
@@ -31,6 +33,7 @@ public class JsonUtils implements IJsonUtils {
             ADULT="adult",
             OVERVIEW= "overview",
             RELEASE_DATE="release_date";
+    private static final String LOG_TAG = "Data Error";
 
     public JSONArray genericNetworkJsonParser(String jsonString, String responseLabel)
             throws JSONException {
@@ -39,7 +42,7 @@ public class JsonUtils implements IJsonUtils {
 
     }
 
-    public JSONArray sortMovieData(JSONArray originalMovieData) throws JSONException{
+    public JSONArray sortMovieRatedData(JSONArray originalMovieData) throws JSONException{
 
         JSONObject dataObject;
         List<JSONObject> objectList = new ArrayList<>();
@@ -58,11 +61,42 @@ public class JsonUtils implements IJsonUtils {
             public int compare(JSONObject firstDataObject, JSONObject secondDataObject ) {
                 try {
 
-                    comparator = secondDataObject.getString(VOTE_AVERAGE)
-                            .compareTo( firstDataObject.getString(VOTE_AVERAGE));
+                    comparator = secondDataObject.getString(TOP_RATED)
+                            .compareTo( firstDataObject.getString(TOP_RATED));
 
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e(LOG_TAG, e.getMessage(),e);
+                }
+                return comparator;
+            }
+        });
+
+        return new JSONArray(objectList);
+    }
+    public JSONArray sortMoviePopularData(JSONArray originalMovieData) throws JSONException{
+
+        JSONObject dataObject;
+        List<JSONObject> objectList = new ArrayList<>();
+
+        for (int index = 0; index < originalMovieData.length(); index++) {
+
+            dataObject = originalMovieData.getJSONObject(index);
+            objectList.add(dataObject);
+
+        }
+
+        Collections.sort(objectList, new Comparator<JSONObject>() {
+            int comparator;
+
+            @Override
+            public int compare(JSONObject firstDataObject, JSONObject secondDataObject ) {
+                try {
+
+                    comparator = secondDataObject.getString(POPULARITY)
+                            .compareTo( firstDataObject.getString(POPULARITY));
+
+                } catch (JSONException e) {
+                    Log.e(LOG_TAG, e.getMessage(),e);
                 }
                 return comparator;
             }
@@ -71,12 +105,13 @@ public class JsonUtils implements IJsonUtils {
         return new JSONArray(objectList);
     }
 
+
     public IMovieModel modelBuilder(JSONObject jsonObject, JSONArray genreArrayNames)
             throws JSONException {
 
         String genreNames = "";
 
-        movieModel.setVoteAverage(jsonObject.getString(VOTE_AVERAGE));
+        movieModel.setVoteAverage(jsonObject.getString(TOP_RATED));
         movieModel.setId(jsonObject.getInt(ID));
         movieModel.setVideo(jsonObject.getBoolean(VIDEO));
         movieModel.setTitle(jsonObject.getString(TITLE));

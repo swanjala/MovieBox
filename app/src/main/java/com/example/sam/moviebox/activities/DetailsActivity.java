@@ -2,6 +2,7 @@ package com.example.sam.moviebox.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -20,18 +21,30 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.net.MalformedURLException;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class DetailsActivity extends AppCompatActivity {
 
     private static final String MOVIE_DATA = "movie_data", GENRES = "genres";
+    private static final String LOG_TAG = "Data Error";
 
-    ImageView iv_poster;
-    TextView tv_title, tv_popularity, tv_original_language,
-            tv_genre_ids, tv_overview, tv_release_dates;
-    IJsonUtils jsonUtils = new JsonUtils();
-    IMovieModel movieModel = new MovieModel();
+    @BindView(R.id.tv_title) TextView tv_title;
+    @BindView(R.id.tv_popularity) TextView tv_popularity;
+    @BindView(R.id.tv_original_language) TextView tv_original_language;
+    @BindView(R.id.tv_genre_ids) TextView tv_genre_ids;
+    @BindView(R.id.tv_overview) TextView tv_overview;
+    @BindView(R.id.tv_release_dates) TextView tv_release_dates;
+    @BindView(R.id.iv_movie_poster) ImageView iv_poster;
+
+
+
+    private IJsonUtils jsonUtils = new JsonUtils();
+    private IMovieModel movieModel = new MovieModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,16 +54,16 @@ public class DetailsActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_details);
-        loadUI();
+        ButterKnife.bind(this);
         try {
             setData();
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, e.getMessage(),e);
         }
         try {
             populateUI();
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, e.getMessage(),e);
         }
 
     }
@@ -61,33 +74,22 @@ public class DetailsActivity extends AppCompatActivity {
         try {
             populateUI();
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, e.getMessage(),e);
         }
     }
-
-    private void loadUI() {
-        tv_title = findViewById(R.id.tv_title);
-        tv_popularity = findViewById(R.id.tv_popularity);
-        tv_original_language = findViewById(R.id.tv_original_language);
-        tv_genre_ids = findViewById(R.id.tv_genre_ids);
-        tv_overview = findViewById(R.id.tv_overview);
-        tv_release_dates = findViewById(R.id.tv_release_dates);
-        iv_poster = findViewById(R.id.iv_movie_poster);
-    }
-
 
     private void setData() throws JSONException {
         JSONObject movieObject = null;
         try {
             movieObject = new JSONObject(this.getIntent().getStringExtra(MOVIE_DATA));
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, e.getMessage(),e);
         }
         JSONArray genreName = null;
         try {
             genreName = new JSONArray(this.getIntent().getStringExtra(GENRES));
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, e.getMessage(),e);
         }
 
         movieModel = jsonUtils.modelBuilder(movieObject, genreName);
@@ -110,6 +112,8 @@ public class DetailsActivity extends AppCompatActivity {
                 .load(String.valueOf(urlBuilder.buildPosterURL(this
                                 .getString(R.string.poster_size_path_original),
                                 movieModel.getBackdropPath())))
+                .placeholder(R.mipmap.ic_launcher_foreground)
+                .error(R.drawable.ic_launcher_background)
                 .fit()
                 .centerCrop()
                 .into(iv_poster);

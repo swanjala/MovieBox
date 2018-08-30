@@ -1,8 +1,10 @@
 package com.example.sam.moviebox.networkUtils;
 
 import android.content.Context;
+import android.os.Build;
 
 
+import com.example.sam.moviebox.BuildConfig;
 import com.example.sam.moviebox.R;
 import com.example.sam.moviebox.classInterfaces.IJsonUtils;
 import com.example.sam.moviebox.classInterfaces.INetworkCalls;
@@ -71,8 +73,7 @@ public class NetworkCalls implements INetworkCalls {
     public HttpGet getMoviesObject() throws MalformedURLException {
 
         HttpGet httpGetObject = new HttpGet(String.valueOf(urlBuilder.buildURL(
-                context.getString(R.string.popular_url_path),
-                context.getString(R.string.api_key))));
+                context.getString(R.string.popular_url_path), BuildConfig.ApiKey)));
         return httpGetObject;
     }
 
@@ -80,8 +81,7 @@ public class NetworkCalls implements INetworkCalls {
     public HttpGet getMovieGenres() throws MalformedURLException {
         HttpGet httpGetGenres =
                 new HttpGet(String.valueOf(urlBuilder
-                        .buildGenreUrl(context.getString(R.string.list_path_url),
-                        context.getString(R.string.api_key))));
+                        .buildGenreUrl(context.getString(R.string.list_path_url), BuildConfig.ApiKey)));
          return httpGetGenres;
     }
 
@@ -90,7 +90,7 @@ public class NetworkCalls implements INetworkCalls {
         HttpGet httpGetTrailer =
                 new HttpGet( String.valueOf(urlBuilder.buildUrlWithID(id,
                         context.getString(R.string.videos_path_url),
-                        context.getString(R.string.api_key))));
+                        BuildConfig.ApiKey)));
         return httpGetTrailer;
     }
 }

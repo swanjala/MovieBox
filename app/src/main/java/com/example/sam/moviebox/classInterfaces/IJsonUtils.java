@@ -8,9 +8,9 @@ public interface IJsonUtils {
 
     JSONArray genericNetworkJsonParser(String jsonString, String responseLabel)
             throws JSONException;
-    JSONArray sortMovieData(JSONArray originalMovieData) throws JSONException;
-
     IMovieModel modelBuilder(JSONObject jsonObject, JSONArray genreArrayNames)
             throws JSONException;
+    JSONArray sortMovieRatedData(JSONArray originalMovieData) throws JSONException;
+    JSONArray sortMoviePopularData(JSONArray originalMovieData) throws JSONException;
 
 }
