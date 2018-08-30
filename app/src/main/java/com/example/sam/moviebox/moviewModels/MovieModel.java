@@ -132,7 +132,6 @@ public class MovieModel implements IMovieModel {
 
     public void setGenreNames(String genres){
         this.genreNames = genres;
-
     }
     public String getGenreNames(){
         return this.genreNames;

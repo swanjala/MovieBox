@@ -6,6 +6,8 @@ import android.util.Log;
 
 
 import com.example.sam.moviebox.R;
+import com.example.sam.moviebox.jsonUtils.IJsonUtils;
+import com.example.sam.moviebox.jsonUtils.JsonUtils;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -21,9 +23,8 @@ import java.net.URL;
 public class NetworkCalls implements INetworkCalls {
     private static String BASE_MOVIE_API_V3_URL = null;
     private Context context;
-    public JSONArray dataStringResult;
-    public JSONArray genreDataString;
-    public JSONArray trailerData;
+
+    IJsonUtils jsonUtils = new JsonUtils();
 
     public NetworkCalls(Context context) {
         BASE_MOVIE_API_V3_URL = context.getString(R.string.base_movie_url_api_v3);
@@ -43,6 +44,14 @@ public class NetworkCalls implements INetworkCalls {
         return new URL(loadMovieDataUri.toString());
 
     }
+    public JSONArray dataResults() throws IOException, JSONException {
+        return getNetworkData();
+    }
+
+    public JSONArray genreResults()throws IOException, JSONException{
+        return getGenresData();
+    }
+
 
     @Override
     public HttpGet getMoviesObject() throws MalformedURLException {
@@ -71,42 +80,27 @@ public class NetworkCalls implements INetworkCalls {
 
     public JSONArray getNetworkData() throws IOException, JSONException {
 
-        HttpResponse dataResponse = httpClient.execute(getMoviesObject());
-        String dataString = EntityUtils.toString(dataResponse.getEntity());
-
-        JSONObject jsonObject = new JSONObject(dataString);
-
-        return this.dataStringResult = jsonObject.getJSONArray("results");
+        return jsonUtils.genericNetworkJsonParser(networkHelper(getMoviesObject()),
+                "results");
 
     }
 
     public JSONArray getGenresData() throws IOException, JSONException{
-        HttpResponse genreResponse = httpClient.execute(getMovieGenres());
-        String genreDataString = EntityUtils.toString(genreResponse.getEntity());
 
-        JSONObject jsonObjectGenres = new JSONObject(genreDataString);
-
-        return this.genreDataString = jsonObjectGenres.getJSONArray("genres");
-
+        return jsonUtils.genericNetworkJsonParser(networkHelper(getMovieGenres()),
+                "genres");
     }
 
     public JSONArray getTrailers(String id) throws IOException, JSONException {
-        HttpResponse trailerReponse = httpClient.execute(getMovieTrailers(id));
-        String trailerDateString = EntityUtils.toString(trailerReponse.getEntity());
 
-        JSONObject jsonObectTrailers = new JSONObject(trailerDateString);
-
-        return this.trailerData = jsonObectTrailers.getJSONArray("results");
-
+        return jsonUtils.genericNetworkJsonParser(networkHelper(getMovieTrailers(id)),
+                "results");
     }
 
-    public JSONArray dataResults() throws IOException, JSONException {
-        return getNetworkData();
-    }
+    private String networkHelper(HttpGet getMethod) throws IOException {
 
-    public JSONArray genreResults()throws IOException, JSONException{
-        return getGenresData();
+        HttpResponse networkResponse = httpClient.execute(getMethod);
+        return  EntityUtils.toString(networkResponse.getEntity());
     }
-
 
 }

@@ -1,4 +1,4 @@
-package com.example.sam.moviebox.activities;
+package com.example.sam.moviebox.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,9 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.sam.moviebox.R;
+import com.example.sam.moviebox.activities.DetailsActivity;
 import com.example.sam.moviebox.moviewModels.IMovieModel;
 import com.example.sam.moviebox.moviewModels.MovieModel;
 import com.squareup.picasso.Picasso;
@@ -18,9 +18,6 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 public class MainRecyclerAdapter extends
         RecyclerView.Adapter<MainRecyclerAdapter.MainRecyclerViewAdapter>{
@@ -64,7 +61,6 @@ public class MainRecyclerAdapter extends
 
     class MainRecyclerViewAdapter extends RecyclerView.ViewHolder {
 
-        TextView tv_vote_average;
         ImageView iv_movie_poster;
         IMovieModel movieModel = new MovieModel();
         private JSONObject movieObject;
@@ -85,8 +81,6 @@ public class MainRecyclerAdapter extends
             this.genreNameData = genreData;
             String genreNames = "";
             Log.d("Data for genre",String.valueOf(genreNameData));
-;
-
 
             try {
 
@@ -103,8 +97,6 @@ public class MainRecyclerAdapter extends
                 movieModel.setAdultFilm(movieObject.getBoolean("adult"));
                 movieModel.setOverview(movieObject.getString("overview"));
                 movieModel.setReleaseDate(movieObject.getString("release_date"));
-
-
 
                 this.averageVote = movieModel.getVoteAverage();
                 Picasso.with(context)
@@ -128,9 +120,5 @@ public class MainRecyclerAdapter extends
                 }
             });
         }
-
-
     }
-
-
 }

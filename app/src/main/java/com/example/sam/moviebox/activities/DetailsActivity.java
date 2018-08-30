@@ -14,6 +14,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.sam.moviebox.jsonUtils.IJsonUtils;
+import com.example.sam.moviebox.jsonUtils.JsonUtils;
 import com.example.sam.moviebox.moviewModels.IMovieModel;
 import com.example.sam.moviebox.moviewModels.MovieModel;
 
@@ -33,17 +35,12 @@ import java.util.Comparator;
 
 public class DetailsActivity extends AppCompatActivity {
 
-    private final IMovieModel movieModel = new MovieModel();
-
     ImageView iv_poster;
     TextView tv_title, tv_popularity, tv_original_language,
             tv_genre_ids, tv_overview, tv_release_dates;
-    JSONArray  trailerArrays;
-    RecyclerView mRecyclerView;
-    RecyclerView.Adapter mAdapter;
-    RecyclerView.LayoutManager mLayoutManager;
+    IJsonUtils jsonUtils = new JsonUtils();
 
-
+    IMovieModel movieModel = new MovieModel();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,14 +50,19 @@ public class DetailsActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_details);
         loadUI();
-        loadData();
+        try {
+            setData();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         populateUI();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        populateUI();
+            populateUI();
     }
 
     private void loadUI(){
@@ -73,61 +75,25 @@ public class DetailsActivity extends AppCompatActivity {
         iv_poster = findViewById(R.id.iv_moview_poster);
     }
 
-    private void loadData() {
+
+    private void setData() throws JSONException {
+        JSONObject movieObject = null;
         try {
-            JSONObject movieObject = new JSONObject(this.getIntent().getStringExtra("movie_data"));
-            JSONArray genreName = new JSONArray(getIntent().getStringExtra("genres"));
-            populateModel(movieObject, genreName);
+            movieObject = new JSONObject(this.getIntent().getStringExtra("movie_data"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    private void populateModel(JSONObject jsonObject, JSONArray genreArrayNames) throws JSONException {
-
-        String genreNames = "";
-
-        movieModel.setVoteAverage(jsonObject.getString("vote_average"));
-        movieModel.setId(jsonObject.getInt("id"));
-        movieModel.setVideo(jsonObject.getBoolean("video"));
-        movieModel.setTitle(jsonObject.getString("title"));
-        movieModel.setPopularity(jsonObject.getInt("popularity"));
-        movieModel.setOriginalLanguage(jsonObject.getString("original_language"));
-        movieModel.setOriginalTitle(jsonObject.getString("original_title"));
-        movieModel.setGenreIds(jsonObject.getJSONArray("genre_ids"));
-        movieModel.setPosterPath(jsonObject.getString("poster_path"));
-        movieModel.setBackdropPath(jsonObject.getString("backdrop_path"));
-        movieModel.setAdultFilm(jsonObject.getBoolean("adult"));
-        movieModel.setOverview(jsonObject.getString("overview").trim());
-        movieModel.setReleaseDate(jsonObject.getString("release_date"));
-
-        JSONArray genreIds = movieModel.getGenreIds();
-        Log.d("genre Ids", String.valueOf(genreIds));
-        for (int i = 0; i < genreIds.length(); i++) {
-            int genreid = genreIds.getInt(i);
-
-            for (int counter = 0; counter < genreArrayNames.length(); counter++) {
-                int id = genreArrayNames.getJSONObject(counter).getInt("id");
-
-                Log.d("genre name data Id ", String.valueOf(id));
-                Log.d("genre Ids", String.valueOf(genreid));
-
-                if (id == genreid) {
-                    String genre = genreArrayNames.getJSONObject(i).getString("name");
-
-                    genreNames = genreNames.concat(genre).concat(" . ");
-                    Log.d("actual genre", genreNames);
-                }
-
-            }
-
+        JSONArray genreName = null;
+        try {
+            genreName = new JSONArray(this.getIntent().getStringExtra("genres"));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        Log.d("genre names", genreNames);
-        movieModel.setGenreNames(genreNames);
 
+        movieModel = jsonUtils.modelBuilder(movieObject,genreName);
     }
+    private void populateUI(){
 
-    private void populateUI() {
         tv_title.setText(movieModel.getTitle());
         tv_title.bringToFront();
         tv_popularity.setText(String.valueOf(movieModel.getVoteAverage()));
@@ -150,44 +116,6 @@ public class DetailsActivity extends AppCompatActivity {
 
 
     }
-
-    public class getTrailer extends AsyncTask<Context,Void, JSONArray>{
-    /*Todo
-    * To complete implementation in stage 2
-    * */
-
-        @Override
-        protected JSONArray doInBackground(Context... contexts){
-
-            JSONArray networkCallResults = new JSONArray();
-
-            final INetworkCalls networkCalls = new NetworkCalls(getApplicationContext());
-
-            try {
-                trailerArrays = networkCalls.getTrailers(String.valueOf(movieModel.getId()));
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return networkCallResults;
-        }
-
-        @Override
-        protected void onPostExecute(JSONArray trailerList) {
-
-            if (trailerArrays != null) {
-                mAdapter = new TrailerRecyclerAdapter(getApplicationContext()
-                        ,trailerList);
-                mRecyclerView.setAdapter(mAdapter);
-
-
-            }
-
-        }
-    }
-
 
 
 
