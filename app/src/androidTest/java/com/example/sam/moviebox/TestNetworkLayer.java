@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.sam.moviebox.networkUtils.INetworkCalls;
+import com.example.sam.moviebox.classInterfaces.INetworkCalls;
 import com.example.sam.moviebox.networkUtils.NetworkCalls;
 
 import org.json.JSONArray;
@@ -46,7 +46,7 @@ public class TestNetworkLayer {
 
 
                         try {
-                            assertTrue(callTest.setURI(appContext.getString(R.string.popular_url_path),
+                            assertTrue(callTest.buildURL(appContext.getString(R.string.popular_url_path),
                                     appContext.getString(R.string.api_key))
                                     .toString()
                                     .equals("https://api.themoviedb.org/3/movie/" +

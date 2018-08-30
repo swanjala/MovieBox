@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">MovieBox</string>
     <string name="base_movie_url_api_v3">https://api.themoviedb.org/3/movie/</string>
+    <string name="base_genre_url_api_v3">https://api.themoviedb.org/3/genre/movie/</string>
     <string name="api_key">api_key=64005791bbe3ddeac2a29edd82bcafb4</string>
     <string name="base_poster_url"> http://image.tmdb.org/t/p/</string>
     <string name="poster_size_path_w92">w92</string>
@@ -11,5 +12,26 @@
     <string name="poster_size_path_w500">w185</string>
     <string name="poster_size_path_w70">w780</string>
     <string name="poster_size_path_original">original</string>
+    <string name="movie_object_vote_average">vote_average</string>
+    <string name="movie_object_id">id</string>
+    <string name="movie_object_video">video</string>
+    <string name="movie_object_title">title</string>
+    <string name="movie_object_popularity">popularity</string>
+    <string name="movie_object_original_language">original_language</string>
+    <string name="movie_object_original_title">original_title</string>
+    <string name="movie_object_genre_ids">genre_ids</string>
+    <string name="movie_object_poster_path">poster_path</string>
+    <string name="movie_object_backdrop_path">backdrop_path</string>
+    <string name="movie_object_adult">adult</string>
+    <string name="movie_object_overview">overview</string>
+    <string name="movie_object_release_dates">release_date</string>
+    <string name="list_path_url">list?</string>
+    <string name="videos_path_url">/videos?</string>
+    <string name="movie_title_hint_text">Movie Title</string>
+    <string name="activity_details_layout_tv_release_dates_hint">Date Released</string>
+    <string name="activity_details_layout_tv_popularity_hint_text">Popularity</string>
+    <string name="activity_details_layout_tv_genre_ids_hint_text">Genre Ids</string>
+    <string name="activity_details_layout_tv_overview_hint_text">Overview</string>
+    <string name="menu_most_popular_sort_by_most_popular">Sort By Most Popular</string>
 
 </resources>

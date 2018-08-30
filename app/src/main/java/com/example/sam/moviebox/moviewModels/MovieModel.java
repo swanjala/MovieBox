@@ -1,9 +1,8 @@
 package com.example.sam.moviebox.moviewModels;
 
-import org.json.JSONArray;
+import com.example.sam.moviebox.classInterfaces.IMovieModel;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import org.json.JSONArray;
 
 public class MovieModel implements IMovieModel {
 
@@ -130,12 +129,11 @@ public class MovieModel implements IMovieModel {
         this.id = id;
     }
 
-    public void setGenreNames(String genres){
-        this.genreNames = genres;
-
-    }
-    public String getGenreNames(){
+    public String getGenreNames() {
         return this.genreNames;
+    }
+    public void setGenreNames(String genres) {
+        this.genreNames = genres;
     }
 
 
