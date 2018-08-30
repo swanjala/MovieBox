@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">MovieBox</string>
     <string name="base_movie_url_api_v3">https://api.themoviedb.org/3/movie/</string>
-    <string name="base_genre_url_api_v3">https://api.themoviedb.org/3/genre/movie/</string>
+    <string name="base_genre_url_api_v3"></string>
     <string name="api_key">api_key=64005791bbe3ddeac2a29edd82bcafb4</string>
     <string name="base_poster_url"> http://image.tmdb.org/t/p/</string>
     <string name="poster_size_path_w92">w92</string>
