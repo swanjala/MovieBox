@@ -1,10 +1,11 @@
-package com.example.sam.moviebox.moviewModels;
+package com.example.sam.moviebox.classInterfaces;
 
 import org.json.JSONArray;
 
 public interface IMovieModel {
 
     String getTitle();
+
     void setTitle(String title);
 
     int getPopularity();
@@ -35,7 +36,7 @@ public interface IMovieModel {
 
     void setAdultFilm(boolean adultFilm);
 
-    String getOverview() ;
+    String getOverview();
 
     void setOverview(String overview);
 
@@ -54,7 +55,9 @@ public interface IMovieModel {
     int getId();
 
     void setId(int id);
+
     void setGenreNames(String genres);
+
     String getGenreNames();
 
 
