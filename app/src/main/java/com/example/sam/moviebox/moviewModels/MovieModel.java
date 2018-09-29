@@ -1,11 +1,19 @@
 package com.example.sam.moviebox.moviewModels;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import com.example.sam.moviebox.classInterfaces.IMovieModel;
 
 import org.json.JSONArray;
 
-public class MovieModel implements IMovieModel {
+import java.io.Serializable;
 
+@Entity (tableName="MovieModel")
+public class MovieModel implements IMovieModel, Serializable {
+
+    @PrimaryKey
     private int id;
     private boolean video;
     private String voteAverage;
@@ -20,6 +28,16 @@ public class MovieModel implements IMovieModel {
     private String overview;
     private String releaseDate;
     private String genreNames;
+
+    private boolean favorite = false;
+
+    public boolean getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
 
     public String getTitle() {
         return title;

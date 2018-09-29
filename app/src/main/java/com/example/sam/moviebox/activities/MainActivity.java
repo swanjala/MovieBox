@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadUI() {
+
         mRecyclerView = findViewById(R.id.rv_main_layout_recyclerView);
         mLayoutManager = new GridLayoutManager(this, SPAN_COUNT);
         mRecyclerView.setLayoutManager(mLayoutManager);
