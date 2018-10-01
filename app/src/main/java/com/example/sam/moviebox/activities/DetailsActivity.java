@@ -26,9 +26,13 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.net.MalformedURLException;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +41,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private static final String MOVIE_DATA = "movie_data", GENRES = "genres";
     private static final String LOG_TAG = "Data Error";
+
     private MovieDatabase movieDatabase;
 
     @BindView(R.id.tv_title) TextView tv_title;
@@ -62,11 +67,12 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_details);
         movieDatabase = MovieDatabase.getMovieInstance(getApplicationContext());
         ButterKnife.bind(this);
-//        try {
-//            setData();
-//        } catch (JSONException e) {
-//            Log.e(LOG_TAG, e.getMessage(),e);
-//        }
+
+        try {
+            setData();
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, e.getMessage(),e);
+        }
         try {
             populateUI();
         } catch (MalformedURLException e) {
@@ -96,23 +102,14 @@ public class DetailsActivity extends AppCompatActivity {
 //        }
     }
 
-//    private void loadUI() {
-//        tv_title = findViewById(R.id.tv_title);
-//        tv_popularity = findViewById(R.id.tv_popularity);
-//        tv_original_language = findViewById(R.id.tv_original_language);
-//        tv_genre_ids = findViewById(R.id.tv_genre_ids);
-//        tv_overview = findViewById(R.id.tv_overview);
-//        tv_release_dates = findViewById(R.id.tv_release_dates);
-//        iv_poster = findViewById(R.id.iv_movie_poster);
-//    }
-
-
     private void setData() throws JSONException {
         JSONObject movieObject = null;
         try {
             movieObject = new JSONObject(this.getIntent().getStringExtra(MOVIE_DATA));
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(),e);
+
+
         }
 //        JSONArray genreName = null;
 //        try {
@@ -142,6 +139,7 @@ public class DetailsActivity extends AppCompatActivity {
                 .load(String.valueOf(urlBuilder.buildPosterURL(this
                                 .getString(R.string.poster_size_path_original),
                                 movieModel.getBackdropPath())))
+
                 .placeholder(R.drawable.ic_launcher_foreground)
                 .error(R.drawable.ic_launcher_background)
                 .fit()
