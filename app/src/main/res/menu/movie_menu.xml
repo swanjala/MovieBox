@@ -6,4 +6,9 @@
 
     <item android:id="@+id/top_rated"
         android:title="@string/menu_sort_by_top_rated"/>
+<<<<<<< HEAD
+=======
+    <item android:id="@+id/favorite_movies"
+        android:title="Favorite Movies"/>
+>>>>>>> ft-implement-database
 </menu>

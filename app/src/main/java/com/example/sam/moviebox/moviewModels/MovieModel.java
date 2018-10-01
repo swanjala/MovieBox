@@ -1,11 +1,22 @@
 package com.example.sam.moviebox.moviewModels;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+
 import com.example.sam.moviebox.classInterfaces.IMovieModel;
 
 import org.json.JSONArray;
 
-public class MovieModel implements IMovieModel {
+import java.io.Serializable;
 
+@Entity (tableName="movieData")
+public class MovieModel implements Serializable {
+
+
+    @PrimaryKey(autoGenerate = true)
+    private int dbId;
     private int id;
     private boolean video;
     private String voteAverage;
@@ -15,11 +26,63 @@ public class MovieModel implements IMovieModel {
     private boolean adultFilm;
     private String originalLanguage;
     private String originalTitle;
+    @Ignore
     private JSONArray genreIds;
     private String backdropPath;
     private String overview;
     private String releaseDate;
     private String genreNames;
+
+    private String favorite;
+
+    public MovieModel(){
+
+    }
+    @Ignore
+    public MovieModel(String title, int popularity,String posterPath,
+                        String originalLanguage,
+                        String backdropPath,String overview, String releaseDates,
+                        String voteAverage, int id, String genreNames, String favorite){
+
+        this.title = title;
+        this.popularity = popularity;
+        this.posterPath = posterPath;
+        this.originalLanguage = originalLanguage;
+        this.backdropPath = backdropPath;
+        this.overview = overview;
+        this.releaseDate = releaseDates;
+        this.voteAverage = voteAverage;
+        this.id = id;
+        this.genreNames = genreNames;
+        this.favorite = favorite;
+
+    }
+    public MovieModel(int dbId, String title, int popularity,String posterPath,
+                      String originalLanguage,
+                      String backdropPath,String overview, String releaseDates,
+                      String voteAverage, int id, String genreNames, String favorite){
+        this.dbId = dbId;
+        this.title = title;
+        this.popularity = popularity;
+        this.posterPath = posterPath;
+        this.originalLanguage = originalLanguage;
+        this.backdropPath = backdropPath;
+        this.overview = overview;
+        this.releaseDate = releaseDates;
+        this.voteAverage = voteAverage;
+        this.id = id;
+        this.genreNames = genreNames;
+        this.favorite = favorite;
+
+    }
+
+    public String getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(String favorite) {
+        this.favorite = favorite;
+    }
 
     public String getTitle() {
         return title;
@@ -128,6 +191,14 @@ public class MovieModel implements IMovieModel {
     public void setId(int id) {
         this.id = id;
     }
+    public int getDbId() {
+        return dbId;
+    }
+
+    public void setDbId(int dbId) {
+        this.dbId = dbId;
+    }
+
 
     public String getGenreNames() {
         return this.genreNames;

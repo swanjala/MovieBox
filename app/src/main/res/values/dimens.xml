@@ -71,7 +71,7 @@
     <dimen name="activity_details_layout_image_view_layout_height">19dp</dimen>
     <dimen name="activity_details_layout_image_view_margin_left">4dp</dimen>
     <dimen name="activity_details_layout_image_view_margin_start">4dp</dimen>
-    <dimen name="activity_details_layout_image_view_margin_top">2dp</dimen>
+    <dimen name="activity_details_layout_image_view_margin_top">0dp</dimen>
     <dimen name="activity_details_layout_rv_trailer_layout_height">75dp</dimen>
     <dimen name="activity_details_layout_rv_trailer_margin_end">8dp</dimen>
     <dimen name="activity_details_layout_rv_trailer_margin_left">8dp</dimen>
