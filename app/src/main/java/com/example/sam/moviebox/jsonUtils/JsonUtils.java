@@ -1,5 +1,7 @@
 package com.example.sam.moviebox.jsonUtils;
 
+import android.util.Log;
+
 import com.example.sam.moviebox.classInterfaces.IJsonUtils;
 import com.example.sam.moviebox.classInterfaces.IMovieModel;
 import com.example.sam.moviebox.moviewModels.MovieModel;
@@ -15,9 +17,9 @@ import java.util.List;
 
 public class JsonUtils implements IJsonUtils {
 
-    private final IMovieModel movieModel = new MovieModel();
+    private final MovieModel movieModel = new MovieModel();
     private static final String
-            VOTE_AVERAGE = "vote_average",
+            TOP_RATED = "vote_average",
             ID = "id",
             NAME = "name",
             VIDEO= "video",
@@ -31,6 +33,7 @@ public class JsonUtils implements IJsonUtils {
             ADULT="adult",
             OVERVIEW= "overview",
             RELEASE_DATE="release_date";
+    private static final String LOG_TAG = "Data Error";
 
     public JSONArray genericNetworkJsonParser(String jsonString, String responseLabel)
             throws JSONException {
@@ -39,44 +42,45 @@ public class JsonUtils implements IJsonUtils {
 
     }
 
-    public JSONArray sortMovieData(JSONArray originalMovieData) throws JSONException{
+    public List<MovieModel> sortMovieRatedData(List<MovieModel> movies) {
 
-        JSONObject dataObject;
-        List<JSONObject> objectList = new ArrayList<>();
-
-        for (int index = 0; index < originalMovieData.length(); index++) {
-
-            dataObject = originalMovieData.getJSONObject(index);
-            objectList.add(dataObject);
-
-        }
-
-        Collections.sort(objectList, new Comparator<JSONObject>() {
+        Collections.sort(movies, new Comparator<MovieModel>() {
             int comparator;
-
             @Override
-            public int compare(JSONObject firstDataObject, JSONObject secondDataObject ) {
-                try {
+            public int compare(MovieModel movieModel, MovieModel t1) {
 
-                    comparator = secondDataObject.getString(VOTE_AVERAGE)
-                            .compareTo( firstDataObject.getString(VOTE_AVERAGE));
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                comparator = String.valueOf(t1.getPopularity())
+                        .compareTo(String.valueOf(movieModel.getPopularity()));
                 return comparator;
             }
         });
 
-        return new JSONArray(objectList);
+        return  movies;
+    }
+    public List<MovieModel> sortMoviePopularData(List<MovieModel> movies) {
+
+        Collections.sort(movies, new Comparator<MovieModel>() {
+            int comparator;
+            @Override
+            public int compare(MovieModel movieModel, MovieModel t1) {
+
+                comparator = String.valueOf(t1.getPopularity())
+                        .compareTo(String.valueOf(movieModel.getPopularity()));
+                return comparator;
+            }
+        });
+
+        return  movies;
     }
 
-    public IMovieModel modelBuilder(JSONObject jsonObject, JSONArray genreArrayNames)
+
+    public MovieModel modelBuilder(JSONObject jsonObject, JSONArray genreArrayNames)
             throws JSONException {
 
         String genreNames = "";
+        Log.d("data",String.valueOf(jsonObject));
 
-        movieModel.setVoteAverage(jsonObject.getString(VOTE_AVERAGE));
+        movieModel.setVoteAverage(jsonObject.getString(TOP_RATED));
         movieModel.setId(jsonObject.getInt(ID));
         movieModel.setVideo(jsonObject.getBoolean(VIDEO));
         movieModel.setTitle(jsonObject.getString(TITLE));

@@ -5,7 +5,8 @@ import org.json.JSONArray;
 public interface IMovieModel {
 
     String getTitle();
-
+    boolean getFavorite();
+    void setFavorite(boolean favorite);
     void setTitle(String title);
 
     int getPopularity();

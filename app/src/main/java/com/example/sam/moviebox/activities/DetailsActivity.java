@@ -1,16 +1,12 @@
 package com.example.sam.moviebox.activities;
 
-import android.annotation.SuppressLint;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,8 +14,9 @@ import android.widget.ToggleButton;
 
 import com.example.sam.moviebox.classInterfaces.IJsonUtils;
 import com.example.sam.moviebox.classInterfaces.IUrlBuilder;
+import com.example.sam.moviebox.database.AppExecutors;
+import com.example.sam.moviebox.database.MovieDatabase;
 import com.example.sam.moviebox.jsonUtils.JsonUtils;
-import com.example.sam.moviebox.classInterfaces.IMovieModel;
 import com.example.sam.moviebox.moviewModels.MovieModel;
 
 import com.example.sam.moviebox.R;
@@ -31,13 +28,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
+import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class DetailsActivity extends AppCompatActivity {
 
     private static final String MOVIE_DATA = "movie_data", GENRES = "genres";
     private static final String LOG_TAG = "Data Error";
+    private MovieDatabase movieDatabase;
 
     @BindView(R.id.tv_title) TextView tv_title;
     @BindView(R.id.tv_popularity) TextView tv_popularity;
@@ -46,12 +46,11 @@ public class DetailsActivity extends AppCompatActivity {
     @BindView(R.id.tv_overview) TextView tv_overview;
     @BindView(R.id.tv_release_dates) TextView tv_release_dates;
     @BindView(R.id.iv_movie_poster) ImageView iv_poster;
-    @BindView(R.id.favoriteToggle) ToggleButton toggleButton;
-//    @BindView(R.id.img_favorite) ImageView img_favorite;
- //   @BindView(R.id.checkBox) CheckBox checkBox;
+//    @BindView(R.id.favoriteToggle) ToggleButton toggleButton;
+
 
     IJsonUtils jsonUtils = new JsonUtils();
-    IMovieModel movieModel = new MovieModel();
+    //MovieModel movieModel = new MovieModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,17 +60,24 @@ public class DetailsActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_details);
-        loadUI();
-        try {
-            setData();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        movieDatabase = MovieDatabase.getMovieInstance(getApplicationContext());
+        ButterKnife.bind(this);
+//        try {
+//            setData();
+//        } catch (JSONException e) {
+//            Log.e(LOG_TAG, e.getMessage(),e);
+//        }
         try {
             populateUI();
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, e.getMessage(),e);
         }
+
+//        try{
+//            saveData();
+//        }catch (Exception e){
+//            Log.e(LOG_TAG, e.getMessage(),e);
+//        }
 
     }
 
@@ -81,19 +87,24 @@ public class DetailsActivity extends AppCompatActivity {
         try {
             populateUI();
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, e.getMessage(),e);
         }
+//        try{
+//            saveData();
+//        }catch (Exception e){
+//            Log.e(LOG_TAG, e.getMessage(),e);
+//        }
     }
 
-    private void loadUI() {
-        tv_title = findViewById(R.id.tv_title);
-        tv_popularity = findViewById(R.id.tv_popularity);
-        tv_original_language = findViewById(R.id.tv_original_language);
-        tv_genre_ids = findViewById(R.id.tv_genre_ids);
-        tv_overview = findViewById(R.id.tv_overview);
-        tv_release_dates = findViewById(R.id.tv_release_dates);
-        iv_poster = findViewById(R.id.iv_movie_poster);
-    }
+//    private void loadUI() {
+//        tv_title = findViewById(R.id.tv_title);
+//        tv_popularity = findViewById(R.id.tv_popularity);
+//        tv_original_language = findViewById(R.id.tv_original_language);
+//        tv_genre_ids = findViewById(R.id.tv_genre_ids);
+//        tv_overview = findViewById(R.id.tv_overview);
+//        tv_release_dates = findViewById(R.id.tv_release_dates);
+//        iv_poster = findViewById(R.id.iv_movie_poster);
+//    }
 
 
     private void setData() throws JSONException {
@@ -101,19 +112,20 @@ public class DetailsActivity extends AppCompatActivity {
         try {
             movieObject = new JSONObject(this.getIntent().getStringExtra(MOVIE_DATA));
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, e.getMessage(),e);
         }
-        JSONArray genreName = null;
-        try {
-            genreName = new JSONArray(this.getIntent().getStringExtra(GENRES));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        JSONArray genreName = null;
+//        try {
+//            genreName = new JSONArray(this.getIntent().getStringExtra(GENRES));
+//        } catch (JSONException e) {
+//            Log.e(LOG_TAG, e.getMessage(),e);
+//        }
 
-        movieModel = jsonUtils.modelBuilder(movieObject, genreName);
+
     }
 
     private void populateUI() throws MalformedURLException {
+        final MovieModel movieModel = (MovieModel)this.getIntent().getSerializableExtra(MOVIE_DATA);
 
         IUrlBuilder urlBuilder = new UrlBuilder(this);
 
@@ -130,11 +142,13 @@ public class DetailsActivity extends AppCompatActivity {
                 .load(String.valueOf(urlBuilder.buildPosterURL(this
                                 .getString(R.string.poster_size_path_original),
                                 movieModel.getBackdropPath())))
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .error(R.drawable.ic_launcher_background)
                 .fit()
                 .centerCrop()
                 .into(iv_poster);
 
-
+        ToggleButton toggleButton = findViewById(R.id.favoriteToggle);
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -144,34 +158,28 @@ public class DetailsActivity extends AppCompatActivity {
                     Log.d("checked","isChecked");
 
                     compoundButton.startAnimation(animation);
+                    movieModel.setFavorite("True");
+                    AppExecutors.getDatabaseInstance().getDiskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            movieDatabase.movieDao().updateMovie(movieModel);
+                        }
+                    });
+
                 } else {
                     Log.d("checked","Not");
                     compoundButton.startAnimation(animation);
+                    movieModel.setFavorite("False");
+                    AppExecutors.getDatabaseInstance().getDiskIO().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            movieDatabase.movieDao().updateMovie(movieModel);
+                        }
+                    });
                 }
 
             }
         });
-
-//        final CheckBox chk = null;
-
-//        int drawableWhiteInt = R.drawable.ic_favorite_white_24dp;
-
-
-
-       // img_favorite.setImageResource(R.drawable.ic_favorite_white_24dp);
-
-//        img_favorite.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                if (chk.isChecked() ) {
-//                    img_favorite.setImageResource(R.drawable.ic_favorite_red_24dp);
-//
-//                }else if (num == 1) {
-//                    img_favorite.setImageResource(R.drawable.ic_favorite_white_24dp);
-//                }
-//            }
-//        });
 
     }
 

@@ -2,7 +2,9 @@ package com.example.sam.moviebox.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,19 +25,28 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
+import java.util.List;
 
 public class MainRecyclerAdapter extends
         RecyclerView.Adapter<MainRecyclerAdapter.MainRecyclerViewAdapter> {
 
     private JSONArray mDataSet, genreData;
+    List<MovieModel> dbRetreiveData;
     private Context context;
     private static final String MOVIE_DATA = "movie_data", GENRES = "genres";
-
+    private static final String LOG_TAG = "Data Error";
+    MovieModel dataSet;
 
     public MainRecyclerAdapter(Context context, JSONArray movieData, JSONArray genreData) {
         this.context = context;
         this.mDataSet = movieData;
         this.genreData = genreData;
+    }
+    public MainRecyclerAdapter(Context context, List<MovieModel> dataList, JSONArray genreData){
+        this.context = context;
+        this.dbRetreiveData = dataList;
+        this.genreData = genreData;
+
     }
 
     @Override
@@ -53,22 +64,22 @@ public class MainRecyclerAdapter extends
     public void onBindViewHolder(MainRecyclerViewAdapter holder, int position) {
 
         try {
-            holder.setMovieData(mDataSet, genreData, position);
+            holder.setMovieData(dbRetreiveData, genreData, position);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, e.getMessage(),e);
         }
     }
 
     @Override
     public int getItemCount() {
-        return mDataSet.length();
+        return dbRetreiveData.size();
     }
 
 
     class MainRecyclerViewAdapter extends RecyclerView.ViewHolder {
 
         ImageView iv_movie_poster;
-        IMovieModel movieModel = new MovieModel();
+        MovieModel movieModel = new MovieModel();
         private JSONObject movieObject;
         private JSONArray genreNameData;
 
@@ -79,66 +90,46 @@ public class MainRecyclerAdapter extends
 
         }
 
-        public void setMovieData(final JSONArray currentData,
+        public void setMovieData(final List<MovieModel> currentData,
                                  final JSONArray genreData,
-                                 final int position) throws JSONException {
+                                 int position) throws JSONException {
 
-            IUrlBuilder urlBuilder = new UrlBuilder(context);
-
-            this.movieObject = currentData.getJSONObject(position);
+            IUrlBuilder urlBuilder  = new UrlBuilder(context);
 
             this.genreNameData = genreData;
+            dataSet = currentData.get(position);
+
+            movieModel.setVoteAverage(dataSet.getVoteAverage());
+
+            movieModel.setId(dataSet.getId());
+
+            movieModel.setTitle(dataSet.getTitle());
+            movieModel.setPopularity(dataSet.getPopularity());
+
+            movieModel.setOriginalLanguage(dataSet.getOriginalLanguage());
+            movieModel.setOriginalTitle(dataSet.getOriginalTitle());
+            movieModel.setGenreIds(dataSet.getGenreIds());
+            movieModel.setPosterPath(dataSet.getPosterPath());
+            movieModel.setBackdropPath(dataSet.getBackdropPath());
+            movieModel.setOverview(dataSet.getOverview());
+            movieModel.setReleaseDate(dataSet.getReleaseDate());
 
             try {
-
-                movieModel.setVoteAverage(movieObject
-                        .getString(context.getString(R.string.movie_object_vote_average)));
-                movieModel.setId(movieObject
-                        .getInt(context.getString(R.string.movie_object_id)));
-                movieModel.setVideo(movieObject
-                        .getBoolean(context.getString(R.string.movie_object_video)));
-                movieModel.setTitle(movieObject.getString(context
-                        .getString(R.string.movie_object_title)));
-                movieModel.setPopularity(movieObject.getInt(context
-                        .getString(R.string.movie_object_popularity)));
-                movieModel.setOriginalLanguage(movieObject.getString(context
-                        .getString(R.string.movie_object_original_language)));
-                movieModel.setOriginalTitle(movieObject.getString(context
-                        .getString(R.string.movie_object_original_title)));
-                movieModel.setGenreIds(movieObject
-                        .getJSONArray(context.getString(R.string.movie_object_genre_ids)));
-                movieModel.setPosterPath(movieObject
-                        .getString(context.getString(R.string.movie_object_poster_path)));
-                movieModel.setBackdropPath(movieObject
-                        .getString(context.getString(R.string.movie_object_backdrop_path)));
-                movieModel.setAdultFilm(movieObject
-                        .getBoolean(context.getString(R.string.movie_object_adult)));
-                movieModel.setOverview(movieObject
-                        .getString(context.getString(R.string.movie_object_overview)));
-                movieModel.setReleaseDate(movieObject
-                        .getString(context.getString(R.string.movie_object_release_dates)));
-
-                try {
-                    Picasso.with(context)
-                            .load(String.valueOf(urlBuilder.buildPosterURL(context
-                                            .getString(R.string.poster_size_path_original),
-                                    movieModel.getPosterPath())))
-                            .fit()
-                            .into(iv_movie_poster);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
+                Picasso.with(context)
+                        .load(String.valueOf(urlBuilder.buildPosterURL(context
+                                        .getString(R.string.poster_size_path_original),
+                                dataSet.getPosterPath())))
+                        .fit()
+                        .into(iv_movie_poster);
+            } catch (MalformedURLException e) {
+              Log.e(LOG_TAG, e.getMessage(),e);
             }
 
             iv_movie_poster.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent detailsIntent = new Intent(context, DetailsActivity.class);
-                    detailsIntent.putExtra(MOVIE_DATA, movieObject.toString());
-                    detailsIntent.putExtra(GENRES, genreNameData.toString());
+                    detailsIntent.putExtra(MOVIE_DATA, movieModel);
                     context.startActivity(detailsIntent);
                 }
             });
