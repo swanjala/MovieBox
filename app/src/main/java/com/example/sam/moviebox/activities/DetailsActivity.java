@@ -51,8 +51,6 @@ public class DetailsActivity extends AppCompatActivity {
     @BindView(R.id.tv_overview) TextView tv_overview;
     @BindView(R.id.tv_release_dates) TextView tv_release_dates;
     @BindView(R.id.iv_movie_poster) ImageView iv_poster;
-//    @BindView(R.id.favoriteToggle) ToggleButton toggleButton;
-
 
     IJsonUtils jsonUtils = new JsonUtils();
 
@@ -69,21 +67,10 @@ public class DetailsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         try {
-            setData();
-        } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(),e);
-        }
-        try {
             populateUI();
         } catch (MalformedURLException e) {
             Log.e(LOG_TAG, e.getMessage(),e);
         }
-
-//        try{
-//            saveData();
-//        }catch (Exception e){
-//            Log.e(LOG_TAG, e.getMessage(),e);
-//        }
 
     }
 
@@ -95,30 +82,6 @@ public class DetailsActivity extends AppCompatActivity {
         } catch (MalformedURLException e) {
             Log.e(LOG_TAG, e.getMessage(),e);
         }
-//        try{
-//            saveData();
-//        }catch (Exception e){
-//            Log.e(LOG_TAG, e.getMessage(),e);
-//        }
-    }
-
-    private void setData() throws JSONException {
-        JSONObject movieObject = null;
-        try {
-            movieObject = new JSONObject(this.getIntent().getStringExtra(MOVIE_DATA));
-        } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(),e);
-
-
-        }
-//        JSONArray genreName = null;
-//        try {
-//            genreName = new JSONArray(this.getIntent().getStringExtra(GENRES));
-//        } catch (JSONException e) {
-//            Log.e(LOG_TAG, e.getMessage(),e);
-//        }
-
-
     }
 
     private void populateUI() throws MalformedURLException {

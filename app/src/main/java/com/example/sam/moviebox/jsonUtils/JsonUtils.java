@@ -72,38 +72,6 @@ public class JsonUtils implements IJsonUtils {
 
         return  movies;
     }
-    public JSONArray sortMoviePopularData(JSONArray originalMovieData) throws JSONException{
-
-        JSONObject dataObject;
-        List<JSONObject> objectList = new ArrayList<>();
-
-        for (int index = 0; index < originalMovieData.length(); index++) {
-
-            dataObject = originalMovieData.getJSONObject(index);
-            objectList.add(dataObject);
-
-        }
-
-        Collections.sort(objectList, new Comparator<JSONObject>() {
-            int comparator;
-
-            @Override
-            public int compare(JSONObject firstDataObject, JSONObject secondDataObject ) {
-                try {
-
-                    comparator = secondDataObject.getString(POPULARITY)
-                            .compareTo( firstDataObject.getString(POPULARITY));
-
-                } catch (JSONException e) {
-                    Log.e(LOG_TAG, e.getMessage(),e);
-                }
-                return comparator;
-            }
-        });
-
-        return new JSONArray(objectList);
-    }
-
 
 
     public MovieModel modelBuilder(JSONObject jsonObject, JSONArray genreArrayNames)
