@@ -12,7 +12,7 @@ import android.util.Log;
 
 import com.example.sam.moviebox.moviewModels.MovieModel;
 
-@Database(entities = {MovieModel.class}, version = 32, exportSchema = false)
+@Database(entities = {MovieModel.class}, version = 31, exportSchema = false)
 @TypeConverters(JSONConverter.class)
 public abstract class MovieDatabase extends RoomDatabase{
 

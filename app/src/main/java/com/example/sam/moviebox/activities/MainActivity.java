@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int SPAN_COUNT = 2;
     private static final String LOG_TAG = "Data Error";
+    private static final String ON_SAVE_INSTANCE_DATA = "movieData";
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private RecyclerView mRecyclerView;
@@ -57,18 +59,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new dataCallTask().execute(this);
+
+
         mDataBase = MovieDatabase.getMovieInstance(getApplicationContext());
+
+        if (savedInstanceState != null){
+            if(savedInstanceState.containsKey(ON_SAVE_INSTANCE_DATA)){
+                loadUI(savedInstanceState.<MovieModel>getParcelableArrayList
+                        (ON_SAVE_INSTANCE_DATA));
+            }
+        } else {
+            new dataCallTask().execute(this);
+            retrieveMovies();
+        }
 
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        retrieveMovies();
+    protected void onSaveInstanceState(Bundle bundle){
+        super.onSaveInstanceState(bundle);
+
+        bundle.putParcelableArrayList(ON_SAVE_INSTANCE_DATA,
+                (ArrayList<? extends Parcelable>) movieInfo);
 
     }
-
     private void retrieveMovies() {
 
         MovieViewModel movieViewModel = ViewModelProviders.of(this)
@@ -207,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
             if (movieDataArray != null) {
                 movieData = jsonArrayList.get(0);
                 movieGenreData = jsonArrayList.get(1);
-
                 saveData();
             }
         }

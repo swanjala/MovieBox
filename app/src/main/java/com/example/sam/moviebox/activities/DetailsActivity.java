@@ -113,6 +113,8 @@ public class DetailsActivity extends AppCompatActivity {
         try {
             genreDescription = genreFilter(new JSONArray(movieModel.getGenreIds()),
                     new JSONArray(movieModel.getGenreNames()));
+
+            Log.d("movie Ids", genreDescription);
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
         }

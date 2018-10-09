@@ -92,7 +92,7 @@
     <dimen name="activity_details_toggle">32dp</dimen>
     <dimen name="activity_details_toggle_height">29dp</dimen>
     <dimen name="activity_details_margin_bottom">8dp</dimen>
-    <dimen name="activity_details_margin_end">8dp</dimen>
+    <dimen name="activity_details_tv_title_margin_end">8dp</dimen>
     <dimen name="activity_details_margin_left">8dp</dimen>
     <dimen name="activity_details_margin_right">8dp</dimen>
     <dimen name="activity_details_margin_start">8dp</dimen>
@@ -155,4 +155,23 @@
     <dimen name="cv_review_text_margin_right">8dp</dimen>
     <dimen name="cv_review_text_margin_start">8dp</dimen>
     <dimen name="cv_review_text_margin_top">4dp</dimen>
+    <dimen name="activity_details_text_size">12sp</dimen>
+    <dimen name="activity_details_image_width">428dp</dimen>
+    <dimen name="activity_details_image_height">463dp</dimen>
+    <dimen name="activity_details_tv_title_width">94dp</dimen>
+    <dimen name="activity_details_tv_title_height">25dp</dimen>
+    <dimen name="activity_details_tv_title_margin_left">8dp</dimen>
+    <dimen name="activity_details_tv_title_margin_right">8dp</dimen>
+    <dimen name="activity_details_tv_title_margin_start">8dp</dimen>
+    <dimen name="activity_details_tv_title_margin_top">276dp</dimen>
+    <dimen name="tv_popularity_margin_top">8dp</dimen>
+    <dimen name="activity_details_tv_original_language_height">25dp</dimen>
+    <dimen name="activity_details_original_languge_margin_bottom">8dp</dimen>
+    <dimen name="activity_details_original_language_margin_end">224dp</dimen>
+    <dimen name="activity_details_original_language_margin_left">8dp</dimen>
+    <dimen name="activity_details_original_language_margin_right">224dp</dimen>
+    <dimen name="activity_details_original_language_margin_start">8dp</dimen>
+    <dimen name="activity_details_tv_overview_width">344dp</dimen>
+    <dimen name="activity_details_tv_margin_bottom">8dp</dimen>
+    <dimen name="activity_details_tv_overview_margin_top">8dp</dimen>
 </resources>
