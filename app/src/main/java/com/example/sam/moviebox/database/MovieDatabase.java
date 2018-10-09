@@ -4,13 +4,16 @@ import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverter;
+import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.util.Log;
 
 import com.example.sam.moviebox.moviewModels.MovieModel;
 
-@Database(entities = {MovieModel.class}, version = 14, exportSchema = false)
+@Database(entities = {MovieModel.class}, version = 32, exportSchema = false)
+@TypeConverters(JSONConverter.class)
 public abstract class MovieDatabase extends RoomDatabase{
 
     private static final String LOG_TAG = MovieDatabase.class.getSimpleName();
@@ -33,14 +36,6 @@ public abstract class MovieDatabase extends RoomDatabase{
             return movieInstance;
 
     }
-
-
-
-    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
-        @Override
-        public void migrate(SupportSQLiteDatabase database) {
-        }
-    };
 
     public abstract MovieDao movieDao();
 

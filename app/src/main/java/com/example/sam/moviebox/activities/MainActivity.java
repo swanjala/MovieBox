@@ -1,7 +1,7 @@
 package com.example.sam.moviebox.activities;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,12 +17,15 @@ import android.view.MenuItem;
 import com.example.sam.moviebox.R;
 import com.example.sam.moviebox.adapters.MainRecyclerAdapter;
 import com.example.sam.moviebox.classInterfaces.IJsonUtils;
+import com.example.sam.moviebox.classInterfaces.INetworkCalls;
 import com.example.sam.moviebox.database.AppExecutors;
 import com.example.sam.moviebox.database.MovieDatabase;
 import com.example.sam.moviebox.jsonUtils.JsonUtils;
-import com.example.sam.moviebox.classInterfaces.INetworkCalls;
+import com.example.sam.moviebox.moviewModels.FavoriteMoviesViewModel;
 import com.example.sam.moviebox.moviewModels.MovieModel;
+import com.example.sam.moviebox.moviewModels.MovieViewModelFactory;
 import com.example.sam.moviebox.networkUtils.NetworkCalls;
+import com.example.sam.moviebox.viewModel.MovieViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int SPAN_COUNT = 2;
     private static final String LOG_TAG = "Data Error";
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -46,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private MovieDatabase mDataBase;
     List<MovieModel> movieInfo = new ArrayList<>();
     List<MovieModel> favoriteMovies = new ArrayList<>();
+    private final boolean mIsFavorite = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         retrieveMovies();
 
@@ -66,45 +71,50 @@ public class MainActivity extends AppCompatActivity {
 
     private void retrieveMovies() {
 
-        final LiveData <List<MovieModel>> movies = mDataBase.movieDao().fetchAllMovies();
-        movies.observe(this, new Observer<List<MovieModel>>() {
+        MovieViewModel movieViewModel = ViewModelProviders.of(this)
+                .get(MovieViewModel.class);
+        movieViewModel.getMovies().observe(this, new Observer<List<MovieModel>>() {
             @Override
             public void onChanged(@Nullable List<MovieModel> movieModels) {
-
                 loadUI(movieModels);
             }
         });
     }
 
-    private List<MovieModel> favoriteMovies() {
-        AppExecutors.getDatabaseInstance().getDiskIO().execute(new Runnable() {
-            @Override
-            public void run() {
+    private void favoriteMovies() {
 
-                movieInfo = mDataBase.movieDao().fetchAllFavorite("True");
+
+        MovieViewModelFactory movieFactory = new MovieViewModelFactory(mDataBase, mIsFavorite);
+
+        final FavoriteMoviesViewModel favoriteMoviesViewModel = ViewModelProviders
+                .of(this, movieFactory)
+                .get(FavoriteMoviesViewModel.class);
+        favoriteMoviesViewModel.getFavoriteMovies().observe(this, new Observer<List<MovieModel>>() {
+            @Override
+            public void onChanged(@Nullable List<MovieModel> movieModels) {
+                favoriteMoviesViewModel.getFavoriteMovies().removeObserver(this);
+                mAdapter = new MainRecyclerAdapter(getApplicationContext(), movieModels, movieGenreData);
+
+                mRecyclerView.setAdapter(mAdapter);
 
             }
         });
 
-        return movieInfo;
     }
 
     private void loadUI(List<MovieModel> movies) {
         this.movieInfo = movies;
-
-        Log.d("Running", "User Interface called");
-
         mRecyclerView = findViewById(R.id.rv_main_layout_recyclerView);
         mLayoutManager = new GridLayoutManager(getApplicationContext(), SPAN_COUNT);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MainRecyclerAdapter(getApplicationContext(),movieInfo,movieGenreData);
+        mAdapter = new MainRecyclerAdapter(getApplicationContext(), movieInfo, movieGenreData);
 
         mRecyclerView.setAdapter(mAdapter);
 
 
     }
 
-    private void saveData(){
+    private void saveData() {
 
         AppExecutors.getDatabaseInstance().getDiskIO().execute(new Runnable() {
             @Override
@@ -118,11 +128,10 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 mDataBase.movieDao().insertMovie(movieData);
-                        //finish();
+
 
             }
         });
-
 
     }
 
@@ -140,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.most_popular:
 
-                this.movieInfo =  jsonUtils.sortMoviePopularData(movieInfo);
+                this.movieInfo = jsonUtils.sortMoviePopularData(movieInfo);
 
                 loadUI(movieInfo);
                 return true;
@@ -155,9 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.favorite_movies:
 
-                this.movieInfo = favoriteMovies();
-
-                loadUI(movieInfo);
+                favoriteMovies();
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -178,16 +185,16 @@ public class MainActivity extends AppCompatActivity {
             try {
                 movieDataArray = networkCalls.dataResults();
             } catch (IOException e) {
-                Log.e(LOG_TAG, e.getMessage(),e);
+                Log.e(LOG_TAG, e.getMessage(), e);
             } catch (JSONException e) {
-                Log.e(LOG_TAG, e.getMessage(),e);
+                Log.e(LOG_TAG, e.getMessage(), e);
             }
             try {
                 genreDataArray = networkCalls.genreResults();
             } catch (IOException e) {
-                Log.e(LOG_TAG, e.getMessage(),e);
+                Log.e(LOG_TAG, e.getMessage(), e);
             } catch (JSONException e) {
-                Log.e(LOG_TAG, e.getMessage(),e);
+                Log.e(LOG_TAG, e.getMessage(), e);
             }
             networkCallResults.add(movieDataArray);
             networkCallResults.add(genreDataArray);
@@ -200,24 +207,19 @@ public class MainActivity extends AppCompatActivity {
             if (movieDataArray != null) {
                 movieData = jsonArrayList.get(0);
                 movieGenreData = jsonArrayList.get(1);
-                Log.d("Movie execute",String.valueOf(movieData));
+
                 saveData();
-                loadUI(movieInfo);
             }
         }
     }
 
     private List<MovieModel> Converter() throws JSONException {
 
-        Log.d("Converter is loading","Converter is executing");
-
         JSONObject movieObject;
 
         List<MovieModel> dataList = new ArrayList<>();
 
         if (movieData != null) {
-
-            Log.d("data Length", String.valueOf(movieData.length()));
 
 
             for (int i = 0; i < movieData.length(); i++) {
@@ -242,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
                 moviedatamodel.setOriginalTitle(movieObject.getString(this
                         .getString(R.string.movie_object_original_title)));
                 moviedatamodel.setGenreIds(movieObject
-                        .getJSONArray(this.getString(R.string.movie_object_genre_ids)));
+                        .getString(this.getString(R.string.movie_object_genre_ids)));
                 moviedatamodel.setPosterPath(movieObject
                         .getString(this.getString(R.string.movie_object_poster_path)));
                 moviedatamodel.setBackdropPath(movieObject
@@ -258,14 +260,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-
         }
-        for (int i = 0; i <dataList.size() ; i++) {
-
-            Log.d("Data List Length", String.valueOf(dataList.get(i).getOriginalTitle()));
-
-        }
-
         return dataList;
     }
 

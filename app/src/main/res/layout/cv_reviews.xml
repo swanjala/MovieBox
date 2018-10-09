@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="80dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary">
+
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cv_review_view_width"
+            android:layout_marginBottom="@dimen/cv_review_view_margin_bottom"
+            android:layout_marginEnd="@dimen/cv_review_view_margin_end"
+            android:layout_marginLeft="@dimen/cv_review_view_margin_left"
+            android:layout_marginRight="@dimen/cv_review_view_margin_right"
+            android:layout_marginStart="@dimen/cv_review_view_margin_start"
+            android:layout_marginTop="@dimen/cv_review_view_margin_top"
+            android:background="@color/text_view_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_review" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/cv_review_name_width"
+            android:layout_marginLeft="@dimen/cv_review_name_margin_left"
+            android:layout_marginRight="@dimen/cv_review_name_margin_right"
+            android:layout_marginStart="@dimen/cv_review_name_margin_start"
+            android:layout_marginTop="@dimen/cv_review_name_margin_stop"
+            android:text="TextView"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.219"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_review"
+            android:layout_width="@dimen/cv_review_review_width"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/cv_review_review_margin_end"
+            android:layout_marginLeft="@dimen/cv_review_review_margin_left"
+            android:layout_marginRight="@dimen/cv_review_margin_right"
+            android:layout_marginStart="@dimen/cv_review_review_margin_start"
+            android:layout_marginTop="@dimen/cv_review_review_margin_stop"
+            android:text="TextView"
+            android:textColor="@color/font_color"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="@dimen/cv_review_text_width"
+            android:layout_height="@dimen/cv_review_text_height"
+            android:layout_marginEnd="@dimen/cv_review_text_margin_end"
+            android:layout_marginLeft="@dimen/cv_review_text_margin_left"
+            android:layout_marginRight="@dimen/cv_review_text_margin_right"
+            android:layout_marginStart="@dimen/cv_review_text_margin_start"
+            android:layout_marginTop="@dimen/cv_review_text_margin_top"
+            android:background="@drawable/textview_shape"
+            android:paddingLeft="8dp"
+            android:text="Review"
+            android:textColor="@color/font_color"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_name"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>

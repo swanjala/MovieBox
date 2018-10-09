@@ -7,4 +7,6 @@
     <color name="botton_shape_border_stroke_color">#ec0004</color>
     <color name="shape_gradient_start_color">#00FFFFFF</color>
     <color name="shape_gradient_end_color">#000000</color>
+    <color name="font_color">#ffffff</color>
+    <color name="text_view_background">#8f8f8f</color>
 </resources>

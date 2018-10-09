@@ -10,4 +10,5 @@ public interface IUrlBuilder {
     URL buildGenreUrl(String path, String apiKey) throws MalformedURLException;
     URL buildUrlWithID(String id, String path, String apiKey)
             throws MalformedURLException;
+    URL buildReviewUrl(String id, String path, String apiKey) throws MalformedURLException;
 }

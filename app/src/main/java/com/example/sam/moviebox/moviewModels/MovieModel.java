@@ -4,6 +4,9 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverter;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.example.sam.moviebox.classInterfaces.IMovieModel;
 
@@ -12,7 +15,7 @@ import org.json.JSONArray;
 import java.io.Serializable;
 
 @Entity (tableName="movieData")
-public class MovieModel implements Serializable {
+public class MovieModel implements Parcelable {
 
 
     @PrimaryKey(autoGenerate = true)
@@ -26,14 +29,13 @@ public class MovieModel implements Serializable {
     private boolean adultFilm;
     private String originalLanguage;
     private String originalTitle;
-    @Ignore
-    private JSONArray genreIds;
+    private String genreIds;
     private String backdropPath;
     private String overview;
     private String releaseDate;
     private String genreNames;
 
-    private String favorite;
+    private boolean favorite;
 
     public MovieModel(){
 
@@ -42,7 +44,7 @@ public class MovieModel implements Serializable {
     public MovieModel(String title, int popularity,String posterPath,
                         String originalLanguage,
                         String backdropPath,String overview, String releaseDates,
-                        String voteAverage, int id, String genreNames, String favorite){
+                        String voteAverage, int id, String genreNames, boolean favorite){
 
         this.title = title;
         this.popularity = popularity;
@@ -60,7 +62,7 @@ public class MovieModel implements Serializable {
     public MovieModel(int dbId, String title, int popularity,String posterPath,
                       String originalLanguage,
                       String backdropPath,String overview, String releaseDates,
-                      String voteAverage, int id, String genreNames, String favorite){
+                      String voteAverage, int id, String genreIds, String genreNames, boolean favorite){
         this.dbId = dbId;
         this.title = title;
         this.popularity = popularity;
@@ -73,14 +75,34 @@ public class MovieModel implements Serializable {
         this.id = id;
         this.genreNames = genreNames;
         this.favorite = favorite;
+        this.genreIds = genreIds;
 
     }
 
-    public String getFavorite() {
+    protected MovieModel(Parcel in) {
+        //dbId = in.readInt();
+        id = in.readInt();
+        voteAverage = in.readString();
+        title = in.readString();
+        popularity = in.readInt();
+        posterPath = in.readString();
+        originalLanguage = in.readString();
+        originalTitle = in.readString();
+        genreIds = in.readString();
+        backdropPath = in.readString();
+        overview = in.readString();
+        releaseDate = in.readString();
+        favorite = in.readByte() != 0;
+        genreNames = in.readString();
+
+    }
+
+
+    public boolean getFavorite() {
         return favorite;
     }
 
-    public void setFavorite(String favorite) {
+    public void setFavorite(boolean favorite) {
         this.favorite = favorite;
     }
 
@@ -124,11 +146,11 @@ public class MovieModel implements Serializable {
         this.originalTitle = originalTitle;
     }
 
-    public JSONArray getGenreIds() {
+    public String getGenreIds() {
         return genreIds;
     }
 
-    public void setGenreIds(JSONArray genreIds) {
+    public void setGenreIds(String genreIds) {
         this.genreIds = genreIds;
     }
 
@@ -208,4 +230,40 @@ public class MovieModel implements Serializable {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(voteAverage);
+        parcel.writeString(title);
+        parcel.writeInt(popularity);
+        parcel.writeString(posterPath);
+        parcel.writeString(originalLanguage);
+        parcel.writeString(originalTitle);
+        parcel.writeString(genreIds);
+        parcel.writeString(backdropPath);
+        parcel.writeString(overview);
+        parcel.writeString(releaseDate);
+        parcel.writeValue(favorite);
+        parcel.writeString(genreNames);
+
+
+
+    }
+
+    public static final Creator<MovieModel> CREATOR = new Parcelable.Creator<MovieModel>() {
+        @Override
+        public MovieModel createFromParcel(Parcel in) {
+            return new MovieModel(in);
+        }
+
+        @Override
+        public MovieModel[] newArray(int size) {
+            return new MovieModel[size];
+        }
+    };
 }

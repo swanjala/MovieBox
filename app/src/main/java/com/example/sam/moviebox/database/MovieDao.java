@@ -20,9 +20,11 @@ public interface MovieDao {
     @Query("SELECT * FROM movieData")
     LiveData<List<MovieModel>> fetchAllMovies();
 
+    @Query("SELECT * FROM movieData WHERE id=:id")
+    MovieModel fetchMovieById(int id);
 
-    @Query("SELECT * FROM movieData WHERE favorite =:favorite")
-    List<MovieModel> fetchAllFavorite(String favorite);
+    @Query("SELECT * FROM movieData WHERE favorite = 1")
+    LiveData<List<MovieModel>> fetchAllFavorite();
 
     @Insert
     void insertMovie(List<MovieModel> movieEntry);

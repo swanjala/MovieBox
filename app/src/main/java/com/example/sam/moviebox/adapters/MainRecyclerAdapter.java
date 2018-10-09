@@ -63,6 +63,7 @@ public class MainRecyclerAdapter extends
     @Override
     public void onBindViewHolder(MainRecyclerViewAdapter holder, int position) {
 
+
         try {
             holder.setMovieData(dbRetreiveData, genreData, position);
         } catch (JSONException e) {
@@ -129,7 +130,10 @@ public class MainRecyclerAdapter extends
                 public void onClick(View view) {
                     Intent detailsIntent = new Intent(context, DetailsActivity.class);
                     detailsIntent.putExtra(MOVIE_DATA, movieModel);
+                    detailsIntent.putExtra("genres", String.valueOf(genreData));
                     context.startActivity(detailsIntent);
+
+
                 }
             });
         }

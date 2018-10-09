@@ -2,6 +2,7 @@ package com.example.sam.moviebox.networkUtils;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
 
 import com.example.sam.moviebox.BuildConfig;
@@ -18,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.net.HttpCookie;
 import java.net.MalformedURLException;
 
 public class NetworkCalls implements INetworkCalls {
@@ -63,6 +65,10 @@ public class NetworkCalls implements INetworkCalls {
                 RESULTS);
     }
 
+    public JSONArray getMovieReviewEntries(String id) throws IOException, JSONException{
+        return jsonUtils.genericNetworkJsonParser(networkHelper(getMovieReviews(id)),RESULTS);
+    }
+
     private String networkHelper(HttpGet getMethod) throws IOException {
 
         HttpResponse networkResponse = httpClient.execute(getMethod);
@@ -91,6 +97,19 @@ public class NetworkCalls implements INetworkCalls {
                 new HttpGet( String.valueOf(urlBuilder.buildUrlWithID(id,
                         context.getString(R.string.videos_path_url),
                         BuildConfig.ApiKey)));
+
         return httpGetTrailer;
+    }
+
+    @Override
+    public HttpGet getMovieReviews(String id){
+        HttpGet httpGetReviews = null;
+        try {
+            httpGetReviews = new HttpGet(String.valueOf(urlBuilder.buildReviewUrl(id,
+                    context.getString(R.string.movie_review_path), BuildConfig.ApiKey)));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return httpGetReviews;
     }
 }

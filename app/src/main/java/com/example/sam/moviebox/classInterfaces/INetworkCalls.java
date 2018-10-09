@@ -29,5 +29,9 @@ public interface INetworkCalls {
 
     HttpGet getMovieTrailers(String id) throws MalformedURLException;
 
+    HttpGet getMovieReviews(String id)throws MalformedURLException;
+
+    JSONArray getMovieReviewEntries(String id) throws IOException, JSONException;
+
 
 }

@@ -49,8 +49,8 @@ public class JsonUtils implements IJsonUtils {
             @Override
             public int compare(MovieModel movieModel, MovieModel t1) {
 
-                comparator = String.valueOf(t1.getPopularity())
-                        .compareTo(String.valueOf(movieModel.getPopularity()));
+                comparator = String.valueOf(t1.getVoteAverage())
+                        .compareTo(String.valueOf(movieModel.getVoteAverage()));
                 return comparator;
             }
         });
@@ -78,8 +78,6 @@ public class JsonUtils implements IJsonUtils {
             throws JSONException {
 
         String genreNames = "";
-        Log.d("data",String.valueOf(jsonObject));
-
         movieModel.setVoteAverage(jsonObject.getString(TOP_RATED));
         movieModel.setId(jsonObject.getInt(ID));
         movieModel.setVideo(jsonObject.getBoolean(VIDEO));
@@ -87,14 +85,14 @@ public class JsonUtils implements IJsonUtils {
         movieModel.setPopularity(jsonObject.getInt(POPULARITY));
         movieModel.setOriginalLanguage(jsonObject.getString(ORIGINAL_LANGUAGE));
         movieModel.setOriginalTitle(jsonObject.getString(ORIGINAL_TITLE));
-        movieModel.setGenreIds(jsonObject.getJSONArray(GENRE_ID));
+        movieModel.setGenreIds(jsonObject.getString(GENRE_ID));
         movieModel.setPosterPath(jsonObject.getString(POSTER_PATH));
         movieModel.setBackdropPath(jsonObject.getString(BACK_DROP));
         movieModel.setAdultFilm(jsonObject.getBoolean(ADULT));
         movieModel.setOverview(jsonObject.getString(OVERVIEW).trim());
         movieModel.setReleaseDate(jsonObject.getString(RELEASE_DATE));
 
-        JSONArray genreIds = movieModel.getGenreIds();
+        JSONArray genreIds = new JSONArray(movieModel.getGenreIds());
 
         for (int index = 0; index < genreIds.length(); index++) {
             int genreid = genreIds.getInt(index);
@@ -108,7 +106,7 @@ public class JsonUtils implements IJsonUtils {
                 }
             }
         }
-        movieModel.setGenreNames(genreNames);
+       movieModel.setGenreNames(genreNames);
 
         return  movieModel;
 
