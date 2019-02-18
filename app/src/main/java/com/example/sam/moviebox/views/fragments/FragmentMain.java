@@ -73,7 +73,8 @@ public class FragmentMain extends Fragment implements Injectable {
 //    } come back to this after core functionality
 
     /* have a helper class for this and use a contract class
-    * to ring it in.--(Separation of concerns)*/
+    * to ring it in.--(Separation of concerns)
+    * See if this can be generified  */
 
     private void handleResponse(Resource<List<MovieModel>> listResource){
         if(listResource != null){

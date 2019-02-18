@@ -1,4 +1,6 @@
 package com.example.sam.moviebox.views.fragments;
 
-public class FragmentDetails {
+import android.support.v4.app.Fragment;
+
+public class FragmentDetails extends Fragment {
 }
