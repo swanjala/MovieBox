@@ -14,6 +14,7 @@ import com.example.sam.moviebox.views.activities.DetailsActivity;
 import com.example.sam.moviebox.classInterfaces.IUrlBuilder;
 import com.example.sam.moviebox.model.MovieModel;
 import com.example.sam.moviebox.networkUtils.UrlBuilder;
+import com.example.sam.moviebox.views.callbacks.MovieCallback;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -32,6 +33,12 @@ public class MainRecyclerAdapter extends
     private static final String MOVIE_DATA = "movie_data", GENRES = "genres";
     private static final String LOG_TAG = "Data Error";
     MovieModel dataSet;
+
+    private MovieCallback mMovieCallback;
+
+    public MainRecyclerAdapter(MovieCallback movieCallBack){
+        mMovieCallback = movieCallBack;
+    }
 
     public MainRecyclerAdapter(Context context, JSONArray movieData, JSONArray genreData) {
         this.context = context;

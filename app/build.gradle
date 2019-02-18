@@ -1,3 +1,5 @@
+import java.util.jar.JarEntry
+
 apply plugin: 'com.android.application'
 
 android {
@@ -14,6 +16,11 @@ android {
                 arguments = ["room.schemaLocation":
                                      "$projectDir/schemas".toString()]
             }
+        }
+        compileOptions.incremental = false
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
         }
     }
     buildTypes {

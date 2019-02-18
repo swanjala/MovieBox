@@ -12,7 +12,7 @@ public class MovieModel implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private int dbId;
-    private int id;
+    public int id;
     private boolean video;
     private String voteAverage;
     private String title;

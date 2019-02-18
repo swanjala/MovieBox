@@ -33,7 +33,7 @@ public class FragmentMain extends Fragment implements Injectable {
     @Inject
     public FragmentNavigator fragmentNavigator;
 
-    @BindView(R.id.rv_main_layout_recyclerView);
+    @BindView(R.id.rv_main_layout_recyclerView)
     RecyclerView mRecylerView;
 
 
@@ -45,7 +45,7 @@ public class FragmentMain extends Fragment implements Injectable {
     public View onCreateView(LayoutInflater layoutInflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        View view = layoutInflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -57,8 +57,8 @@ public class FragmentMain extends Fragment implements Injectable {
 
         mRecylerView.setLayoutManager(gridLayoutManager);
         mMainRecyclerAdapter =
-                new MovieViewModel((vMoviePoser,movie) -> fragmentNavigator
-                .navigateToDetailsFragment(ivMoviePoster, movie.id)
+                new MainRecyclerAdapter((ivMoviePoster, movie) -> fragmentNavigator
+                .navigateToFragmentDetails(ivMoviePoster, movie.id)
         );
         mRecylerView.setAdapter(mMainRecyclerAdapter);
         mMoviewViewModel = ViewModelProviders.of(this, mViewModelFactory)
