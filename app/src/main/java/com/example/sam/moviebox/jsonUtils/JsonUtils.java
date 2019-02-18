@@ -1,16 +1,12 @@
 package com.example.sam.moviebox.jsonUtils;
 
-import android.util.Log;
-
 import com.example.sam.moviebox.classInterfaces.IJsonUtils;
-import com.example.sam.moviebox.classInterfaces.IMovieModel;
-import com.example.sam.moviebox.moviewModels.MovieModel;
+import com.example.sam.moviebox.model.MovieModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;

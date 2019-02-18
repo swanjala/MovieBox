@@ -1,8 +1,7 @@
-package com.example.sam.moviebox.adapters;
+package com.example.sam.moviebox.views.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,12 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.sam.moviebox.R;
-import com.example.sam.moviebox.activities.DetailsActivity;
-import com.example.sam.moviebox.classInterfaces.IMovieModel;
+import com.example.sam.moviebox.views.activities.DetailsActivity;
 import com.example.sam.moviebox.classInterfaces.IUrlBuilder;
-import com.example.sam.moviebox.moviewModels.MovieModel;
-import com.example.sam.moviebox.classInterfaces.INetworkCalls;
-import com.example.sam.moviebox.networkUtils.NetworkCalls;
+import com.example.sam.moviebox.model.MovieModel;
 import com.example.sam.moviebox.networkUtils.UrlBuilder;
 import com.squareup.picasso.Picasso;
 

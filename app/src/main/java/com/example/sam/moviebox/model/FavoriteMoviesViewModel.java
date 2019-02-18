@@ -1,4 +1,4 @@
-package com.example.sam.moviebox.moviewModels;
+package com.example.sam.moviebox.model;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;

@@ -1,4 +1,4 @@
-package com.example.sam.moviebox.activities;
+package com.example.sam.moviebox.views.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,12 +21,12 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.example.sam.moviebox.R;
-import com.example.sam.moviebox.adapters.ReviewsRecyclerAdapter;
+import com.example.sam.moviebox.views.adapters.ReviewsRecyclerAdapter;
 import com.example.sam.moviebox.classInterfaces.INetworkCalls;
 import com.example.sam.moviebox.classInterfaces.IUrlBuilder;
 import com.example.sam.moviebox.database.AppExecutors;
 import com.example.sam.moviebox.database.MovieDatabase;
-import com.example.sam.moviebox.moviewModels.MovieModel;
+import com.example.sam.moviebox.model.MovieModel;
 import com.example.sam.moviebox.networkUtils.NetworkCalls;
 import com.example.sam.moviebox.networkUtils.UrlBuilder;
 import com.squareup.picasso.Picasso;

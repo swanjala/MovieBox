@@ -1,18 +1,10 @@
-package com.example.sam.moviebox.moviewModels;
+package com.example.sam.moviebox.model;
 
-import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverter;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.example.sam.moviebox.classInterfaces.IMovieModel;
-
-import org.json.JSONArray;
-
-import java.io.Serializable;
 
 @Entity (tableName="movieData")
 public class MovieModel implements Parcelable {

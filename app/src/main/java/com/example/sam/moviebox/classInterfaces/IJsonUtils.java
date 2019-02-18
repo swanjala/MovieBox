@@ -1,6 +1,6 @@
 package com.example.sam.moviebox.classInterfaces;
 
-import com.example.sam.moviebox.moviewModels.MovieModel;
+import com.example.sam.moviebox.model.MovieModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;

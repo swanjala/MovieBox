@@ -1,16 +1,13 @@
 package com.example.sam.moviebox.database;
 
-import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.TypeConverter;
 import android.arch.persistence.room.TypeConverters;
-import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.sam.moviebox.moviewModels.MovieModel;
+import com.example.sam.moviebox.model.MovieModel;
 
 @Database(entities = {MovieModel.class}, version = 31, exportSchema = false)
 @TypeConverters(JSONConverter.class)

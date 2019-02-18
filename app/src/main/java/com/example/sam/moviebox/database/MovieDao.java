@@ -8,10 +8,8 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.example.sam.moviebox.classInterfaces.IMovieModel;
-import com.example.sam.moviebox.moviewModels.MovieModel;
+import com.example.sam.moviebox.model.MovieModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Dao

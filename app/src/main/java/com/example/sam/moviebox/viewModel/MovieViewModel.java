@@ -3,13 +3,11 @@ package com.example.sam.moviebox.viewModel;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
-import android.graphics.Movie;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.sam.moviebox.database.MovieDatabase;
-import com.example.sam.moviebox.moviewModels.MovieModel;
+import com.example.sam.moviebox.model.MovieModel;
 
 import java.util.List;
 

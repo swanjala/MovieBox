@@ -1,4 +1,4 @@
-package com.example.sam.moviebox.activities;
+package com.example.sam.moviebox.views.activities;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -16,15 +16,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.sam.moviebox.R;
-import com.example.sam.moviebox.adapters.MainRecyclerAdapter;
+import com.example.sam.moviebox.views.adapters.MainRecyclerAdapter;
 import com.example.sam.moviebox.classInterfaces.IJsonUtils;
 import com.example.sam.moviebox.classInterfaces.INetworkCalls;
 import com.example.sam.moviebox.database.AppExecutors;
 import com.example.sam.moviebox.database.MovieDatabase;
 import com.example.sam.moviebox.jsonUtils.JsonUtils;
-import com.example.sam.moviebox.moviewModels.FavoriteMoviesViewModel;
-import com.example.sam.moviebox.moviewModels.MovieModel;
-import com.example.sam.moviebox.moviewModels.MovieViewModelFactory;
+import com.example.sam.moviebox.model.FavoriteMoviesViewModel;
+import com.example.sam.moviebox.model.MovieModel;
+import com.example.sam.moviebox.model.MovieViewModelFactory;
 import com.example.sam.moviebox.networkUtils.NetworkCalls;
 import com.example.sam.moviebox.viewModel.MovieViewModel;
 
