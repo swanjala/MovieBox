@@ -12,6 +12,7 @@ import com.example.sam.moviebox.repository.api.MovieResponse;
 import com.example.sam.moviebox.repository.model.ApiResponse;
 import com.example.sam.moviebox.repository.resources.AppExecutors;
 import com.example.sam.moviebox.repository.resources.ResourceHandler;
+import com.example.sam.moviebox.repository.resources.Resource;
 
 import java.util.List;
 
