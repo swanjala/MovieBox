@@ -62,8 +62,7 @@ public class ApiResponse<T> {
         if(linkHeader == null){
             links = Collections.emptyMap();
         }else {
-            links = Collections.emptyMap();
-        } else {
+
             links = new ArrayMap<>();
             Matcher matcher = LINK_PATTERN.matcher(linkHeader);
 
