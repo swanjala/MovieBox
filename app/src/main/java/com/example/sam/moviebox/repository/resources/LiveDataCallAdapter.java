@@ -17,7 +17,7 @@ import retrofit2.Response;
 
 /**
  * Adapter that instanciates a Livedata instance of type ApiResponse
- * within a retrofit call
+ * on a retrofit call
  * @param <R>
  */
 

@@ -7,6 +7,7 @@ import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.sam.moviebox.database.dao.MovieDao;
 import com.example.sam.moviebox.model.MovieModel;
 
 @Database(entities = {MovieModel.class}, version = 31, exportSchema = false)
