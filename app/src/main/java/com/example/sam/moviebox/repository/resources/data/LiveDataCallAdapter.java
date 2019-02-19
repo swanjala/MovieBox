@@ -1,9 +1,6 @@
-package com.example.sam.moviebox.repository.util;
+package com.example.sam.moviebox.repository.resources.data;
 
-import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
-import android.support.annotation.NonNull;
 
 import com.example.sam.moviebox.repository.model.ApiResponse;
 
@@ -51,7 +48,7 @@ public class LiveDataCallAdapter<R> implements CallAdapter<R,
                    });
                }
             }
-        }
+        };
 
     }
 

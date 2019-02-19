@@ -1,4 +1,4 @@
-package com.example.sam.moviebox.repository.util;
+package com.example.sam.moviebox.repository.resources.utils;
 
 import android.os.Handler;
 import android.os.Looper;

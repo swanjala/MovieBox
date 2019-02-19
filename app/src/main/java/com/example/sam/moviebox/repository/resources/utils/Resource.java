@@ -1,13 +1,11 @@
-package com.example.sam.moviebox.repository.resources;
+package com.example.sam.moviebox.repository.resources.utils;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import java.sql.ResultSet;
-
-import static com.example.sam.moviebox.repository.resources.Status.ERROR;
-import static com.example.sam.moviebox.repository.resources.Status.LOADING;
-import static com.example.sam.moviebox.repository.resources.Status.SUCCESS;
+import static com.example.sam.moviebox.repository.resources.utils.Status.ERROR;
+import static com.example.sam.moviebox.repository.resources.utils.Status.LOADING;
+import static com.example.sam.moviebox.repository.resources.utils.Status.SUCCESS;
 
 
 public class Resource<T> {

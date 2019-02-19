@@ -1,4 +1,4 @@
-package com.example.sam.moviebox.repository.util;
+package com.example.sam.moviebox.repository.resources.utils;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
@@ -8,8 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 
 import com.example.sam.moviebox.repository.model.ApiResponse;
+import com.example.sam.moviebox.repository.resources.data.Objects;
 
-import java.util.Objects;
 
 /**
  * Class that provisions network and database resources
