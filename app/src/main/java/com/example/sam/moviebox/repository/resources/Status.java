@@ -1,4 +1,7 @@
 package com.example.sam.moviebox.repository.resources;
 
-public class Status {
+public enum Status {
+    SUCCESS,
+    ERROR,
+    LOADING
 }
