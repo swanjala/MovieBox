@@ -27,11 +27,10 @@ public class FragmentNavigator {
                 .commitAllowingStateLoss();
     }
 
-    public void navigateToFragmentDetails(View imageView, int movieId) {
+    public void navigateToFragmentDetails(int movieId) {
         FragmentDetails fragmentDetails = FragmentDetails.create(movieId);
         fragmentManager.beginTransaction()
                 .setReorderingAllowed(true)
-                .addSharedElement(imageView, ViewCompat.getTransitionName(imageView))
                 .replace(container, fragmentDetails)
                 .addToBackStack(null)
                 .commitAllowingStateLoss();

@@ -1,5 +1,6 @@
 package com.example.sam.moviebox.views.fragments;
 
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,12 +13,17 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.sam.moviebox.R;
+import com.example.sam.moviebox.dependencies.Injectable;
 import com.example.sam.moviebox.model.MovieModel;
+import com.example.sam.moviebox.repository.resources.utils.Resource;
 import com.example.sam.moviebox.viewModel.MovieViewModel;
 import com.example.sam.moviebox.views.adapters.MainRecyclerAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -28,17 +34,20 @@ import butterknife.ButterKnife;
 public class FragmentMain extends Fragment implements Injectable {
 
     @Inject
-    public ViewModelProviders.Factory mViewModelFactory;
+    public ViewModelProvider.Factory mViewModelFactory;
 
     @Inject
     public FragmentNavigator fragmentNavigator;
 
     @BindView(R.id.rv_main_layout_recyclerView)
     RecyclerView mRecylerView;
+    @BindView(R.id.progressbar)
+    ProgressBar progressBar;
 
 
     private MainRecyclerAdapter mMainRecyclerAdapter;
     private MovieViewModel mMoviewViewModel;
+   // private List<MovieModel> mMovieList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -57,8 +66,8 @@ public class FragmentMain extends Fragment implements Injectable {
 
         mRecylerView.setLayoutManager(gridLayoutManager);
         mMainRecyclerAdapter =
-                new MainRecyclerAdapter((ivMoviePoster, movie) -> fragmentNavigator
-                .navigateToFragmentDetails(ivMoviePoster, movie.id)
+                new MainRecyclerAdapter((movie) -> fragmentNavigator
+                .navigateToFragmentDetails( movie.id)
         );
         mRecylerView.setAdapter(mMainRecyclerAdapter);
         mMoviewViewModel = ViewModelProviders.of(this, mViewModelFactory)
@@ -79,33 +88,32 @@ public class FragmentMain extends Fragment implements Injectable {
     private void handleResponse(Resource<List<MovieModel>> listResource){
         if(listResource != null){
             switch (listResource.status){
-                case ERROR;
-                   progressBar.setVisibility(View.GONE);
-                   errorTextView.setVisibility(View.VISIBLE);
-                   errorTextView.setText(listResource.message);
+                case ERROR:
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getContext(),"Error fetching " + listResource.message
+                            ,Toast.LENGTH_LONG).show();
                    break;
                 case LOADING:
-                    progreeBar.setVisibility(View.VISIBLE);
-                    errorTextView.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
+                    Toast.makeText(getContext(),"Loading "
+                            ,Toast.LENGTH_LONG).show();
                     break;
-
                 case SUCCESS:
                     progressBar.setVisibility(View.GONE);
-                    errorTextView.setVisibility(View.GONE);
                     if(listResource.data != null && listResource.data.size() > 0){
-                        mMovieList = listResource.data;
                         mMainRecyclerAdapter.setData(listResource.data);
                         mMainRecyclerAdapter.notifyDataSetChanged();
 
                     } else {
-                        errorTextView.setText("Unable to load movies");
-                        errorTextView.setVisibility(View.VISIBLE);
+                        Toast.makeText(getContext(),"Unable to load movies",
+                                Toast.LENGTH_LONG).show();
                     }
                     break;
 
                     default:
                         progressBar.setVisibility(View.GONE);
-                        errorTextView.setText("Movies not found");
+                        Toast.makeText(getContext(),"Movies not found",
+                                Toast.LENGTH_LONG).show();
                         break;
             }
         }
