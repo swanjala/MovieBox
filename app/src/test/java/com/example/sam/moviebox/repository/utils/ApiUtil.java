@@ -1,4 +1,4 @@
-package com.example.sam.moviebox.repository;
+package com.example.sam.moviebox.repository.utils;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;

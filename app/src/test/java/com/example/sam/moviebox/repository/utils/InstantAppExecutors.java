@@ -1,4 +1,4 @@
-package com.example.sam.moviebox.repository;
+package com.example.sam.moviebox.repository.utils;
 
 import com.example.sam.moviebox.repository.resources.utils.AppExecutors;
 

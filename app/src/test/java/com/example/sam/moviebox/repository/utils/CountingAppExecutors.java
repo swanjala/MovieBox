@@ -1,4 +1,4 @@
-package com.example.sam.moviebox.repository;
+package com.example.sam.moviebox.repository.utils;
 
 import android.support.annotation.NonNull;
 
