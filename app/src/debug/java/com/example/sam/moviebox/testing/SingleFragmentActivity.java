@@ -1,4 +1,4 @@
-package com.example.sam.testing;
+package com.example.sam.moviebox.testing;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
