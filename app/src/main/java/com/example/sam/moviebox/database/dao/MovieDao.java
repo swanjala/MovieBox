@@ -1,37 +1,35 @@
-package com.example.sam.moviebox.database;
+package com.example.sam.moviebox.database.dao;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Update;
 
 import com.example.sam.moviebox.model.MovieModel;
 
 import java.util.List;
 
 @Dao
-public interface MovieDao {
+public abstract class MovieDao {
 
     @Query("SELECT * FROM movieData")
-    LiveData<List<MovieModel>> fetchAllMovies();
+    public abstract LiveData<List<MovieModel>> fetchAllMovies();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public abstract void insert(MovieModel... movieModel);
 
     @Query("SELECT * FROM movieData WHERE id=:id")
-    MovieModel fetchMovieById(int id);
+    public abstract LiveData<MovieModel> fetchMovieById(int id);
 
-    @Query("SELECT * FROM movieData WHERE favorite = 1")
-    LiveData<List<MovieModel>> fetchAllFavorite();
+    @Query("SELECT * FROM movieData where title = :title")
+    public abstract LiveData<List<MovieModel>> searchMovieByTitle(String title);
 
-    @Insert
-    void insertMovie(List<MovieModel> movieEntry);
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    public abstract long createMovieIfNotExists(MovieModel movieModel);
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateMovie(MovieModel movieEntry);
 
-    @Delete
-    void deleteMovie(MovieModel movieModel);
-
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public abstract void insertMovie(List<MovieModel> movieEntry);
 
 }
