@@ -6,7 +6,7 @@ import android.support.test.runner.AndroidJUnitRunner;
 
 import com.example.sam.moviebox.TestApp;
 
-public class MovieBoxTestRunnner extends AndroidJUnitRunner {
+public class MovieBoxTestRunner extends AndroidJUnitRunner {
 @Override
     public Application newApplication(ClassLoader classLoader,
                                       String className,
