@@ -1,21 +1,28 @@
 package com.example.sam.moviebox.database;
 
+import android.annotation.SuppressLint;
 import android.arch.persistence.room.TypeConverter;
+import android.arch.persistence.room.util.StringUtil;
 
-import com.google.gson.Gson;
+import java.util.Collections;
+import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+@SuppressLint("RestrictedApi")
+public class MovieBoxTypeConverter {
 
-public class JSONConverter {
 
     @TypeConverter
-    public String toString(JSONArray jsonArray){
-        if (jsonArray == null){
-            return (null);
+    public static List<Integer> stringToIntList(String data) {
+        if (data == null) {
+            return Collections.emptyList();
         }
 
-        return (jsonArray.toString());
+        return StringUtil.splitToIntList(data);
 
+    }
+
+    @TypeConverter
+    public static String intListToString(List<Integer> ints) {
+        return StringUtil.joinIntoString(ints);
     }
 }
