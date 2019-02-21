@@ -13,7 +13,7 @@ public class DatabaseTest {
     @Before
     public void init() {
         movieBoxDatabase = Room.inMemoryDatabaseBuilder(
-                InstrumentationRegitry.getContext(),
+                InstrumentationRegistry.getContext(),
                 MovieBoxDatabase.class
         ).build();
     }
@@ -23,3 +23,4 @@ public class DatabaseTest {
         movieBoxDatabase.close();
     }
 }
+

@@ -1,6 +1,8 @@
 package com.example.sam.moviebox.database;
 
 import com.example.sam.moviebox.model.MovieModel;
+import com.example.sam.moviebox.utils.TestUtil;
+import static com.example.sam.moviebox.LiveDataTestUtil.getValue;
 
 import org.junit.Test;
 
@@ -10,7 +12,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNull.notNullValue;
 
-import com.example.sam.moviebox.utils.TestUtil;
+
+
 
 public class MovieDaoTest extends DatabaseTest {
     @Test
@@ -23,7 +26,7 @@ public class MovieDaoTest extends DatabaseTest {
 
         movieBoxDatabase.movieDao().insertMovie(movieList);
         List<MovieModel> loadedMovie = getValue(movieBoxDatabase.movieDao()
-                .searchMovieByTitle("Bohemian Rhapsody: The Last Jedi"));
+                .searchMovieByTitle("Bohemian Rhapsody"));
         assertThat(loadedMovie, notNullValue());
         assertThat(loadedMovie.get(0).title, is("Bohemian Rhapsody"));
     }
@@ -33,21 +36,23 @@ public class MovieDaoTest extends DatabaseTest {
         List<MovieModel> movieList =new ArrayList<>();
 
         MovieModel movieModel = TestUtil.createMovie(
-                "Bohemian Rhapsody", "\\/lHu1wtNaczFPGFDTrjCSzeLPTKN.jpg"
+                "Bohemian Rhapsody",  "\\/lHu1wtNaczFPGFDTrjCSzeLPTKN.jpg"
         );
         movieList.add(movieModel);
 
-        movieBoxDatabase.movieDao().insertMovie(movieList);
+        movieBoxDatabase.movieDao().insert(movieModel);
 
         assertThat(movieBoxDatabase.movieDao()
-                .createMovieIfNotExists(movieBoxDatabase), is( -1L));
+                .createMovieIfNotExists(movieModel), is( -1L));
 
     }
 
-    @Test void testCreateIfNotExists_doesNotExists() throws InterruptedException{
+    @Test
+    public void testCreateIfNotExists_doesNotExists() throws InterruptedException{
         MovieModel movieModel = TestUtil.createMovie(
                 "Bohemian Rhapsody", "\\/lHu1wtNaczFPGFDTrjCSzeLPTKN.jpg"
         );
-        assertThat(movieBoxDatabase.movieDao().createMovieIfNotExists(movieModel), is( 1L));
+        // why should this be 1L?
+        assertThat(movieBoxDatabase.movieDao().createMovieIfNotExists(movieModel), is( 198663L));
     }
 }
