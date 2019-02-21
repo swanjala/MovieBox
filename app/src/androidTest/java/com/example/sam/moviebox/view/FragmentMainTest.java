@@ -1,10 +1,13 @@
 package com.example.sam.moviebox.view;
 
+import android.app.Fragment;
 import android.arch.lifecycle.MediatorLiveData;
 import android.support.annotation.NonNull;
-import android.support.test.espresso.matcher.ViewMatchers;
+import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.example.sam.moviebox.R;
 import com.example.sam.moviebox.model.MovieModel;
@@ -14,7 +17,7 @@ import com.example.sam.moviebox.utils.RecyclerViewMatcher;
 import com.example.sam.moviebox.utils.TestUtil;
 import com.example.sam.moviebox.utils.ViewModelUtil;
 import com.example.sam.moviebox.viewModel.MovieViewModel;
-import com.example.sam.moviebox.views.activities.SingleFragmentActivity;
+import com.example.sam.moviebox.testing.SingleFragmentActivity;
 import com.example.sam.moviebox.views.fragments.FragmentDetails;
 import com.example.sam.moviebox.views.fragments.FragmentMain;
 import com.example.sam.moviebox.views.fragments.FragmentNavigator;
@@ -30,15 +33,15 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static com.example.sam.moviebox.utils.MatcherUtil.listMatcher;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.hamcrest.CoreMatchers.not;
 
 @RunWith(AndroidJUnit4.class)
-public class MovieListFragmentTest {
+public class FragmentMainTest {
 
     @Rule
     public ActivityTestRule<SingleFragmentActivity> activityTestRule =
@@ -46,23 +49,25 @@ public class MovieListFragmentTest {
                     true,true);
     private MovieViewModel movieViewModel;
     private MediatorLiveData<Resource<List<MovieModel>>> result = new MediatorLiveData<>();
+    private FragmentNavigator fragmentNavigator;
 
     @Before
     public void init() {
         EspressoTestUtil.disableProgressBarAnimation(activityTestRule);
-        FragmentDetails fragmentDetails = new FragmentDetails();
+        FragmentMain fragmentMain = new FragmentMain();
 
+        fragmentNavigator = mock(FragmentNavigator.class);
         movieViewModel = mock(MovieViewModel.class);
+//         imageView = imageView.findViewById(R.id.imageView);
         when(movieViewModel.getMovies()).thenReturn(result);
 
-        fragmentDetails.viewModelFactory = ViewModelUtil.createFor(movieViewModel);
+        fragmentMain.mViewModelFactory = ViewModelUtil.createFor(movieViewModel);
 
-        activityTestRule.getActivity().setFragment(fragmentDetails);
+        activityTestRule.getActivity().setFragment(fragmentMain);
     }
     @Test
     public void testLoadResults() {
         result.postValue(Resource.success(TestUtil.getMovieList()));
-
         onView(listMatcher().atPosition(0)).check(matches(isDisplayed()));
         onView(withId(R.id.progressbar)).check(matches(not(isDisplayed())));
 
@@ -73,7 +78,6 @@ public class MovieListFragmentTest {
         result.postValue(Resource.success(TestUtil.getMovieList()));
         onView(listMatcher().atPosition(0)).check(matches(isDisplayed()));
         onView(withId(R.id.progressbar)).check(matches(not(isDisplayed())));
-        onView(listMatcher().atPosition(0)).perform(click());
     }
 
 //    @Test
