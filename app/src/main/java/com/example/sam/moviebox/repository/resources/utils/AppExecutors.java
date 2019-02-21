@@ -29,13 +29,13 @@ public class AppExecutors {
                 new MainThreadExecutor());
     }
 
-    public Executor getDiskIO(){
+    public Executor diskIO(){
         return diskIO;
     }
-    public Executor getNetworkIO(){
+    public Executor networkIO(){
         return networkIO;
     }
-    public Executor getMainThread() {
+    public Executor mainThread() {
         return mainThread;
     }
 

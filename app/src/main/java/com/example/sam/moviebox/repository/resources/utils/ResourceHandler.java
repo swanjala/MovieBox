@@ -50,9 +50,9 @@ public abstract class ResourceHandler<ResultType,RequestType> {
             result.removeSource(dbSource);
 
             if (response.isSuccessful()){
-                appExecutors.getDiskIO().execute(() ->{
+                appExecutors.diskIO().execute(() ->{
                     saveCallResult(processResponse(response));
-                    appExecutors.getMainThread().execute(() ->
+                    appExecutors.mainThread().execute(() ->
                             result.addSource(loadFromDb(),
                                     newData-> setValue(Resource.success(newData))));
                 });

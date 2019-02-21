@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class ApiResponse<T> {
 

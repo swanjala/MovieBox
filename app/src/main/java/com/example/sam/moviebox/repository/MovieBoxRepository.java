@@ -3,16 +3,20 @@ package com.example.sam.moviebox.repository;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.example.sam.moviebox.database.MovieBoxDatabase;
+import com.example.sam.moviebox.database.dao.GenreDao;
 import com.example.sam.moviebox.database.dao.MovieDao;
+import com.example.sam.moviebox.model.GenreModel;
 import com.example.sam.moviebox.model.MovieModel;
+import com.example.sam.moviebox.repository.api.GenreResponse;
 import com.example.sam.moviebox.repository.api.MovieBoxService;
 import com.example.sam.moviebox.repository.api.MovieResponse;
 import com.example.sam.moviebox.repository.model.ApiResponse;
-import com.example.sam.moviebox.repository.resources.AppExecutors;
-import com.example.sam.moviebox.repository.resources.ResourceHandler;
-import com.example.sam.moviebox.repository.resources.Resource;
+import com.example.sam.moviebox.repository.resources.utils.AppExecutors;
+import com.example.sam.moviebox.repository.resources.utils.ResourceHandler;
+import com.example.sam.moviebox.repository.resources.utils.Resource;
 
 import java.util.List;
 
@@ -28,6 +32,7 @@ public class MovieBoxRepository {
     private MovieBoxService mMovieBoxService;
     private MovieBoxDatabase mMovieBoxDatabase;
     private MovieDao mMovieDao;
+    private GenreDao mGenreDao;
     private final AppExecutors mAppExecutors;
     /** TODO: create Genre and video dao
      *
@@ -37,11 +42,13 @@ public class MovieBoxRepository {
     MovieBoxRepository(AppExecutors appExecutors,
                        MovieBoxService movieBoxService,
                        MovieBoxDatabase movieBoxDatabase,
-                       MovieDao movieDao){
+                       MovieDao movieDao,
+                       GenreDao genreDao){
         mMovieBoxDatabase = movieBoxDatabase;
         mAppExecutors = appExecutors;
         mMovieDao = movieDao;
         mMovieBoxService = movieBoxService;
+        mGenreDao = genreDao;
 
     }
     public LiveData<Resource<List<MovieModel>>> getAllMovies(){
@@ -86,7 +93,7 @@ public class MovieBoxRepository {
             @NonNull
             @Override
             protected LiveData<List<MovieModel>> loadFromDb() {
-                return mMovieDao.fetchAllFavorite();
+                return mMovieDao.fetchAllMovies();
             }
 
             @NonNull
@@ -95,6 +102,64 @@ public class MovieBoxRepository {
                 return mMovieBoxService.getPopularMovies();
             }
         }.asLiveData();
+    }
+
+    public LiveData<Resource<GenreModel>> getGenresById(int genreId){
+        return new ResourceHandler<GenreModel, GenreResponse>(mAppExecutors){
+
+            @Override
+            protected void saveCallResult(@NonNull GenreResponse item) {
+                    mGenreDao.insetGenres(item.getGenres());
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable GenreModel data) {
+                return data == null;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<GenreModel> loadFromDb() {
+                return mGenreDao.searchGenresById(genreId);
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<GenreResponse>> createCall() {
+                return mMovieBoxService.getGenres();
+            }
+        }.asLiveData();
+    }
+
+    public LiveData<Resource<MovieModel>> getMovieById(int movieId){
+        return new ResourceHandler<MovieModel, MovieModel>(mAppExecutors){
+
+            @Override
+            protected void saveCallResult(@NonNull MovieModel item) {
+                mMovieDao.insert(item);
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable MovieModel data) {
+                return data == null;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<MovieModel> loadFromDb() {
+                return mMovieDao.fetchMovieById(movieId);
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<MovieModel>> createCall() {
+                return mMovieBoxService. getMovieById(movieId);
+            }
+        }.asLiveData();
+    }
+
+    public LiveData<Resource<Boolean>> searchNextPage(String query){
+        return null;
     }
 
 }
