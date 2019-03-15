@@ -14,16 +14,6 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary">
 
-        <ImageView
-            android:id="@+id/iv_movie_poster"
-            android:layout_width="@dimen/activity_details_image_width"
-            android:layout_height="@dimen/activity_details_image_height"
-            android:adjustViewBounds="false"
-            android:cropToPadding="true"
-            android:foreground="@drawable/foreground_gradient"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="@dimen/activity_details_tv_title_width"
@@ -106,14 +96,9 @@
             android:id="@+id/imageView"
             android:layout_width="@dimen/activity_details_layout_image_view_layout_width"
             android:layout_height="@dimen/activity_details_layout_image_view_layout_height"
-            android:layout_marginLeft="@dimen/activity_details_layout_image_view_margin_left"
-            android:layout_marginStart="@dimen/activity_details_layout_image_view_margin_start"
-            android:layout_marginTop="@dimen/activity_details_layout_image_view_margin_top"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_popularity"
-            app:layout_constraintStart_toStartOf="@+id/tv_popularity"
-            app:layout_constraintTop_toTopOf="@+id/tv_popularity"
-            app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_star_black_24dp" />
+            app:srcCompat="@drawable/ic_star_black_24dp"
+            tools:layout_editor_absoluteX="336dp"
+            tools:layout_editor_absoluteY="8dp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_trailer"
@@ -231,6 +216,19 @@
             app:layout_constraintHorizontal_bias="0.109"
             app:layout_constraintStart_toStartOf="@+id/tv_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_release_dates" />
+
+        <ImageView
+            android:id="@+id/iv_movie_poster"
+            android:layout_width="@dimen/activity_details_image_width"
+            android:layout_height="478dp"
+            android:layout_marginBottom="8dp"
+            android:adjustViewBounds="false"
+            android:cropToPadding="true"
+            android:foreground="@drawable/foreground_gradient"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
