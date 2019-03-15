@@ -188,20 +188,7 @@ public class FragmentDetails extends Fragment implements Injectable {
             tv_overview.setText(movieResults.overview);
             tv_overview.bringToFront();
             tv_release_dates.setText(movieResults.releaseYear);
-//            bt_play_trailer.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent webTrailerIntent = null;
-//                    try {
-//                        webTrailerIntent = new Intent(Intent.ACTION_VIEW,
-//                                Uri.parse("http:www.youtube.com/watch?v=" + trailerObject.getString("key")));
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                    startActivity(webTrailerIntent);
-//
-//                }
-//            });
+
 
 
             Glide.with(getActivity())
